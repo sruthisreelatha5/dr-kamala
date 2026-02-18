@@ -21,9 +21,8 @@ export default function Book() {
 						Collected Poems
 					</h2>
 					<p className={styles.bookDescription}>
-						A posthumous collection of poems gathered from a lifetime of writing — gathered with
-						love by her family, and now offered to the world as Dr. R. Kamala always gave:
-						generously, wholeheartedly, and with the hope of bringing light into someone&apos;s day.
+						A collection of poems gathered from a lifetime of writing, now offered to the world as
+						Dr. R. Kamala always gave: generously, wholeheartedly, and with the hope of bringing light into someone&apos;s day.
 					</p>
 					<p className={styles.bookDescription}>
 						This book is a gift to all who knew her, and a beautiful introduction for all who did

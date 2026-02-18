@@ -8,7 +8,7 @@ export default function Hero() {
 			<KannikonnaArt />
 			<h1 className={styles.heroName}>Dr. R. Kamala</h1>
 			<p className={styles.heroYears}>
-				Daughter &nbsp;&middot;&nbsp; Mother &nbsp;&middot;&nbsp; Aunt &nbsp;&middot;&nbsp; Friend
+				Daughter &nbsp;&middot;&nbsp; Wife &nbsp;&middot;&nbsp; Mother &nbsp;&middot;&nbsp; Aunt &nbsp;&middot;&nbsp; Friend
 				&nbsp;&middot;&nbsp; Teacher
 			</p>
 			<div className={styles.heroDivider} />
