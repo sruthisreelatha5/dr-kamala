@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dr. R. Kamala — The Hall of Silence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #faf6f0;
+      --warm-white: #fefcf8;
+      --ink: #2c2416;
+      --sepia: #7a5c3a;
+      --sepia-light: #b5895a;
+      --rose: #c4826a;
+      --rose-light: #e8c4b4;
+      --sage: #8a9e8a;
+      --muted: #9e8e7a;
+      --card-bg: #fdf8f2;
+      --border: #e8ddd0;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--cream);
+      color: var(--ink);
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      line-height: 1.8;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Grain texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 999;
+      padding: 1.2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(250, 246, 240, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow 0.3s;
+    }
+
+    nav.scrolled { box-shadow: 0 2px 20px rgba(44,36,22,0.08); }
+
+    .nav-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      color: var(--sepia);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--sepia); }
+
+    .nav-toggle { display: none; background: none; border: none; cursor: pointer; }
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--sepia);
+      margin: 5px 0;
+      transition: all 0.3s;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 75% 60% at 50% 40%, rgba(255, 215, 50, 0.22) 0%, rgba(255, 200, 30, 0.10) 45%, transparent 70%),
+        radial-gradient(ellipse 40% 30% at 20% 60%, rgba(255, 220, 80, 0.12) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 30% at 80% 60%, rgba(255, 220, 80, 0.12) 0%, transparent 55%),
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(196,130,106,0.06) 0%, transparent 70%);
+    }
+
+    /* Kannikonna flower clusters */
+    .kannikonna {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .k-branch {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .k-flower {
+      width: 14px;
+      height: 14px;
+      background: radial-gradient(circle at 35% 35%, #fff8d0, #f5c800);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      box-shadow: 0 2px 8px rgba(240, 185, 0, 0.3);
+      position: relative;
+    }
+
+    .k-flower::before {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      background: radial-gradient(circle at 40% 35%, rgba(255,255,255,0.6), transparent 60%);
+      border-radius: inherit;
+    }
+
+    .k-stem {
+      width: 1.5px;
+      background: linear-gradient(to bottom, #a8c070, #7a9a50);
+      border-radius: 2px;
+    }
+
+    .k-leaf {
+      width: 10px;
+      height: 6px;
+      background: linear-gradient(135deg, #b8d080, #8ab050);
+      border-radius: 50% 0 50% 0;
+      position: absolute;
+    }
+
+    .hero-ornament {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      color: var(--rose-light);
+      line-height: 1;
+      opacity: 0.5;
+      margin-bottom: 1rem;
+      animation: fadeUp 1.2s ease both;
+    }
+
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4rem, 12vw, 9rem);
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      color: var(--ink);
+      animation: fadeUp 1.2s 0.2s ease both;
+    }
+
+    .hero-years {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      color: var(--muted);
+      margin-top: 0.8rem;
+      animation: fadeUp 1.2s 0.35s ease both;
+    }
+
+    .hero-divider {
+      width: 60px;
+      height: 1px;
+      background: var(--sepia-light);
+      margin: 2rem auto;
+      animation: fadeUp 1.2s 0.5s ease both;
+    }
+
+    .hero-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+      font-style: italic;
+      font-weight: 300;
+      color: var(--sepia);
+      max-width: 500px;
+      animation: fadeUp 1.2s 0.65s ease both;
+    }
+
+    .hero-scroll {
+      margin-top: 4rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      animation: fadeUp 1.2s 0.9s ease both;
+    }
+
+    .hero-scroll span {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, var(--sepia-light), transparent);
+      animation: scrollPulse 2s infinite;
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 6rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.2;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--sepia);
+    }
+
+    .full-width-section {
+      max-width: 100%;
+      padding: 6rem 0;
+    }
+
+    .full-width-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ── ABOUT ── */
+    #about .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .photo-placeholder {
+      aspect-ratio: 3/4;
+      background: linear-gradient(135deg, var(--rose-light) 0%, var(--sepia-light) 100%);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      text-align: center;
+      padding: 1rem;
+      opacity: 0.7;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .photo-placeholder::after {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 1px;
+    }
+
+    .about-text p {
+      color: var(--sepia);
+      margin-bottom: 1.5rem;
+      font-size: 1.05rem;
+    }
+
+    .about-text blockquote {
+      border-left: 2px solid var(--rose-light);
+      padding-left: 1.5rem;
+      margin: 2rem 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-style: italic;
+      color: var(--sepia);
+      line-height: 1.6;
+    }
+
+    /* ── THE BOOK ── */
+    #book {
+      background: var(--ink);
+      max-width: 100%;
+      padding: 6rem 2rem;
+    }
+
+    #book .full-width-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .book-cover {
+      aspect-ratio: 2/3;
+      background: linear-gradient(160deg, var(--sepia) 0%, #3d2b1a 100%);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      color: var(--cream);
+      font-family: 'Cormorant Garamond', serif;
+      box-shadow: 8px 8px 40px rgba(0,0,0,0.5);
+      position: relative;
+    }
+
+    .book-cover-title {
+      font-size: 1.8rem;
+      font-weight: 300;
+      line-height: 1.3;
+      margin-bottom: 1rem;
+    }
+
+    .book-cover-author {
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    .book-cover::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(to bottom, var(--rose), var(--sepia-light));
+    }
+
+    #book .section-label { color: var(--rose-light); }
+    #book .section-title { color: var(--cream); }
+    #book .section-title em { color: var(--sepia-light); }
+
+    .book-description {
+      color: rgba(250,246,240,0.7);
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .book-excerpt {
+      border-left: 2px solid var(--rose);
+      padding-left: 1.5rem;
+      margin: 2rem 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--rose-light);
+      font-size: 1.25rem;
+      line-height: 1.8;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 1px;
+      transition: all 0.3s;
+    }
+
+    .btn-light {
+      background: transparent;
+      color: var(--cream);
+      border: 1px solid rgba(250,246,240,0.4);
+    }
+
+    .btn-light:hover {
+      background: rgba(250,246,240,0.1);
+      border-color: var(--cream);
+    }
+
+    .btn-dark {
+      background: var(--ink);
+      color: var(--cream);
+      border: 1px solid var(--ink);
+    }
+
+    .btn-dark:hover { background: var(--sepia); border-color: var(--sepia); }
+
+    /* ── POEMS ── */
+    #poems .poems-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 3rem;
+    }
+
+    .poem-card {
+      padding: 2.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--rose-light);
+      position: relative;
+    }
+
+    .poem-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: var(--sepia);
+      margin-bottom: 1.5rem;
+    }
+
+    .poem-body {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--ink);
+      line-height: 2;
+      white-space: pre-line;
+    }
+
+    .poem-note {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* ── TRIBUTES ── */
+    #tributes {
+      background: linear-gradient(180deg, var(--warm-white) 0%, var(--cream) 100%);
+      max-width: 100%;
+      padding: 6rem 2rem;
+    }
+
+    .tributes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .tribute-card {
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      padding: 1.8rem 1.8rem 1.4rem;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tribute-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(44,36,22,0.09);
+      border-color: var(--rose-light);
+    }
+
+    .tribute-card::before {
+      content: '❝';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      color: var(--rose-light);
+      position: absolute;
+      top: -0.5rem;
+      left: 1.2rem;
+      line-height: 1;
+    }
+
+    .tribute-text-wrap {
+      padding-top: 1.5rem;
+      margin-bottom: 1rem;
+      flex: 1;
+    }
+
+    .tribute-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--ink);
+      line-height: 1.75;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .tribute-card.expanded .tribute-text {
+      display: block;
+      -webkit-line-clamp: unset;
+    }
+
+    .tribute-footer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      padding-top: 0.9rem;
+      margin-top: 0.2rem;
+      gap: 0.5rem;
+    }
+
+    .tribute-author {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .tribute-relation {
+      font-size: 0.75rem;
+      color: var(--rose);
+      margin-top: 0.15rem;
+    }
+
+    .tribute-read-more {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sepia-light);
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: color 0.2s;
+      user-select: none;
+    }
+
+    .tribute-card:hover .tribute-read-more { color: var(--sepia); }
+    .tribute-card.expanded .tribute-read-more { color: var(--rose); }
+
+    /* ── TRIBUTE MODAL ── */
+    .tribute-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(44,36,22,0.7);
+      z-index: 9990;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .tribute-modal-overlay.active { display: flex; }
+
+    .tribute-modal {
+      background: var(--warm-white);
+      max-width: 600px;
+      width: 100%;
+      padding: 3rem;
+      position: relative;
+      max-height: 85vh;
+      overflow-y: auto;
+      animation: fadeUp 0.3s ease;
+    }
+
+    .tribute-modal::before {
+      content: '❝';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem;
+      color: var(--rose-light);
+      position: absolute;
+      top: -0.5rem;
+      left: 1.5rem;
+      line-height: 1;
+    }
+
+    .tribute-modal-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--ink);
+      line-height: 1.85;
+      padding-top: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .tribute-modal-author {
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+    }
+
+    .tribute-modal-relation {
+      font-size: 0.8rem;
+      color: var(--rose);
+      margin-top: 0.2rem;
+    }
+
+    .tribute-modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.2rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--muted);
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .tribute-modal-close:hover { color: var(--ink); }
+
+    /* ── REMEMBRANCE WALL ── */
+    #remember .remember-intro {
+      max-width: 600px;
+      color: var(--sepia);
+      margin-bottom: 3rem;
+    }
+
+    .remember-form {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      max-width: 600px;
+      margin-bottom: 4rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      border: 1px solid var(--border);
+      background: var(--warm-white);
+      color: var(--ink);
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 300;
+      outline: none;
+      transition: border-color 0.3s;
+      border-radius: 0;
+      appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus { border-color: var(--sepia); }
+
+    .form-group textarea { resize: vertical; min-height: 100px; }
+
+    .char-count { font-size: 0.75rem; color: var(--muted); text-align: right; margin-top: 0.3rem; }
+
+    .submit-btn {
+      background: var(--sepia);
+      color: var(--cream);
+      border: none;
+      padding: 0.8rem 2.5rem;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .submit-btn:hover { background: var(--ink); }
+
+    .wall-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--sepia);
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+
+    .messages-wall {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .message-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--rose-light);
+      padding: 1.5rem;
+      position: relative;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .message-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--ink);
+      line-height: 1.75;
+      margin-bottom: 1rem;
+    }
+
+    .message-meta {
+      font-size: 0.78rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding-top: 0.6rem;
+    }
+
+    .message-name { color: var(--sepia); font-weight: 400; }
+
+    .wall-count {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+
+    .empty-wall {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 3rem;
+      color: var(--muted);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      border: 1px dashed var(--border);
+    }
+
+    /* ── GALLERY ── */
+    #gallery .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto;
+      gap: 0.8rem;
+    }
+
+    .gallery-item {
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .gallery-item:nth-child(1) { grid-column: span 2; }
+    .gallery-item:nth-child(4) { grid-column: span 2; }
+
+    .gallery-photo {
+      width: 100%;
+      height: 100%;
+      min-height: 220px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+      background: linear-gradient(135deg, var(--rose-light) 0%, var(--sepia-light) 100%);
+    }
+
+    .gallery-photo-placeholder {
+      width: 100%;
+      min-height: 220px;
+      background: linear-gradient(135deg, var(--rose-light) 0%, var(--sepia-light) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 0.5rem;
+      color: rgba(255,255,255,0.8);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      transition: transform 0.5s ease;
+    }
+
+    .gallery-photo-placeholder:nth-child(odd) {
+      background: linear-gradient(135deg, var(--sage) 0%, var(--sepia) 100%);
+    }
+
+    .gallery-item:hover .gallery-photo-placeholder,
+    .gallery-item:hover .gallery-photo { transform: scale(1.04); }
+
+    .gallery-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1rem;
+      background: linear-gradient(transparent, rgba(44,36,22,0.7));
+      color: var(--cream);
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .gallery-item:hover .gallery-caption { opacity: 1; }
+
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(44,36,22,0.95);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .lightbox.active { display: flex; }
+
+    .lightbox-content {
+      max-width: 800px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .lightbox-img {
+      max-height: 70vh;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    .lightbox-img-placeholder {
+      width: 100%;
+      height: 60vh;
+      background: linear-gradient(135deg, var(--rose-light) 0%, var(--sepia-light) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+    }
+
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: var(--rose-light);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: none;
+      border: none;
+      color: var(--cream);
+      font-size: 2rem;
+      cursor: pointer;
+      line-height: 1;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+
+    .lightbox-close:hover { opacity: 1; }
+
+    /* ── EVENTS ── */
+    #events .events-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      max-width: 700px;
+    }
+
+    .event-card {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 2rem;
+      padding: 1.8rem;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      align-items: start;
+      transition: border-color 0.3s;
+    }
+
+    .event-card:hover { border-color: var(--sepia-light); }
+
+    .event-date-block {
+      text-align: center;
+    }
+
+    .event-month {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--rose);
+    }
+
+    .event-day {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .event-year {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .event-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--sepia);
+      margin-bottom: 0.3rem;
+    }
+
+    .event-location {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .event-desc { font-size: 0.95rem; color: var(--ink); }
+
+    .event-rsvp {
+      display: inline-block;
+      margin-top: 0.8rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--rose);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rose-light);
+      padding-bottom: 1px;
+      transition: color 0.3s;
+    }
+
+    .event-rsvp:hover { color: var(--sepia); }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--ink);
+      max-width: 100%;
+      padding: 6rem 2rem;
+      text-align: center;
+    }
+
+    #contact .section-label { color: var(--rose-light); }
+    #contact .section-title { color: var(--cream); }
+
+    .contact-subtitle {
+      color: rgba(250,246,240,0.6);
+      max-width: 500px;
+      margin: 0 auto 3rem;
+    }
+
+    .contact-form {
+      max-width: 540px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .contact-form .form-group label { color: rgba(250,246,240,0.5); }
+
+    .contact-form input,
+    .contact-form textarea {
+      background: rgba(250,246,240,0.05);
+      border-color: rgba(250,246,240,0.15);
+      color: var(--cream);
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus { border-color: rgba(250,246,240,0.4); }
+
+    .contact-form .submit-btn {
+      background: var(--rose);
+      width: 100%;
+    }
+
+    .contact-form .submit-btn:hover { background: var(--sepia-light); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #1a1208;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .footer-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-style: italic;
+      color: var(--sepia-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-sub {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: rgba(250,246,240,0.3);
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+
+    .footer-links a {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(250,246,240,0.3);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover { color: var(--sepia-light); }
+
+    .footer-copy {
+      font-size: 0.72rem;
+      color: rgba(250,246,240,0.2);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.1); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── SUCCESS MESSAGE ── */
+    .success-msg {
+      display: none;
+      padding: 1rem 1.5rem;
+      background: rgba(138,158,138,0.15);
+      border: 1px solid var(--sage);
+      color: var(--sage);
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--cream); padding: 1rem 2rem 2rem; border-bottom: 1px solid var(--border); }
+      .nav-links.open { display: flex; }
+      .nav-toggle { display: block; }
+
+      #about .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .photo-placeholder { aspect-ratio: 4/3; max-height: 260px; }
+
+      #book .full-width-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .book-cover { max-width: 220px; margin: 0 auto; }
+
+      .gallery-grid { grid-template-columns: 1fr 1fr !important; }
+      .gallery-item:nth-child(1),
+      .gallery-item:nth-child(4) { grid-column: span 1; }
+
+      .form-row { grid-template-columns: 1fr; }
+
+      section { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="nav-name">Dr. R. Kamala</div>
+    <button class="nav-toggle" onclick="toggleNav()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about" onclick="closeNav()">About</a></li>
+      <li><a href="#book" onclick="closeNav()">The Book</a></li>
+      <li><a href="#tributes" onclick="closeNav()">Tributes</a></li>
+      <li><a href="#remember" onclick="closeNav()">Remember Her</a></li>
+      <li><a href="#gallery" onclick="closeNav()">Gallery</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+
+    <!-- Kannikonna realistic clusters -->
+    <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible" viewBox="0 0 1440 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <!-- Soft petal shape -->
+        <radialGradient id="petal1" cx="40%" cy="30%" r="65%">
+          <stop offset="0%" stop-color="#fffde8"/>
+          <stop offset="50%" stop-color="#f5e88a"/>
+          <stop offset="100%" stop-color="#e8d060"/>
+        </radialGradient>
+        <radialGradient id="petal2" cx="40%" cy="30%" r="65%">
+          <stop offset="0%" stop-color="#fffff0"/>
+          <stop offset="50%" stop-color="#f9f0a0"/>
+          <stop offset="100%" stop-color="#ede070"/>
+        </radialGradient>
+        <radialGradient id="petal3" cx="40%" cy="30%" r="65%">
+          <stop offset="0%" stop-color="#fdfde0"/>
+          <stop offset="50%" stop-color="#f2e878"/>
+          <stop offset="100%" stop-color="#e0cc55"/>
+        </radialGradient>
+        <!-- Bud gradient -->
+        <radialGradient id="bud1" cx="40%" cy="25%" r="70%">
+          <stop offset="0%" stop-color="#f9f0b0"/>
+          <stop offset="100%" stop-color="#c8a830"/>
+        </radialGradient>
+        <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="0.6"/>
+        </filter>
+      </defs>
+
+      <!-- ═══ LEFT CLUSTER ═══ -->
+      <g transform="translate(60, -10)" opacity="0.88">
+        <!-- main stem -->
+        <path d="M 0 0 C 2 80 -4 160 3 280 C 6 340 -2 400 4 480" stroke="#9db870" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <!-- sub stems -->
+        <path d="M 1 60 C -18 90 -30 110 -28 140" stroke="#9db870" stroke-width="1.2" fill="none"/>
+        <path d="M 0 60 C 16 88 26 108 24 136" stroke="#9db870" stroke-width="1.2" fill="none"/>
+        <path d="M 2 110 C -20 138 -32 158 -30 188" stroke="#9db870" stroke-width="1.1" fill="none"/>
+        <path d="M 1 110 C 18 136 28 156 26 184" stroke="#9db870" stroke-width="1.1" fill="none"/>
+        <path d="M 3 165 C -16 192 -26 212 -22 240" stroke="#9db870" stroke-width="1" fill="none"/>
+        <path d="M 2 165 C 14 190 22 210 20 237" stroke="#9db870" stroke-width="1" fill="none"/>
+        <path d="M 3 218 C -12 244 -20 264 -16 290" stroke="#9db870" stroke-width="0.9" fill="none"/>
+        <path d="M 3 218 C 11 242 17 262 15 287" stroke="#9db870" stroke-width="0.9" fill="none"/>
+        <path d="M 4 270 C -8 296 -14 316 -10 340" stroke="#9db870" stroke-width="0.8" fill="none"/>
+        <path d="M 3 270 C 8 294 12 314 10 338" stroke="#9db870" stroke-width="0.8" fill="none"/>
+        <path d="M 3 320 C -6 346 -10 366 -6 390" stroke="#9db870" stroke-width="0.7" fill="none"/>
+        <path d="M 4 320 C 6 344 9 364 7 387" stroke="#9db870" stroke-width="0.7" fill="none"/>
+        <path d="M 4 370 C -4 395 -7 414 -4 436" stroke="#9db870" stroke-width="0.6" fill="none"/>
+        <path d="M 4 370 C 5 393 7 412 5 434" stroke="#9db870" stroke-width="0.6" fill="none"/>
+
+        <!-- Flower clusters at branch tips — each cluster: 5 petals + center -->
+        <!-- Cluster at ~60 left -->
+        <g transform="translate(-28, 140)" filter="url(#soft)">
+          <ellipse cx="0" cy="-10" rx="8" ry="11" fill="url(#petal1)" opacity="0.92" transform="rotate(-20)"/>
+          <ellipse cx="9" cy="-6" rx="8" ry="11" fill="url(#petal2)" opacity="0.88" transform="rotate(30)"/>
+          <ellipse cx="8" cy="5" rx="8" ry="11" fill="url(#petal1)" opacity="0.9" transform="rotate(80)"/>
+          <ellipse cx="-1" cy="9" rx="8" ry="11" fill="url(#petal3)" opacity="0.87" transform="rotate(140)"/>
+          <ellipse cx="-9" cy="3" rx="8" ry="11" fill="url(#petal2)" opacity="0.89" transform="rotate(200)"/>
+          <circle cx="0" cy="0" r="4" fill="#c8940a" opacity="0.7"/>
+          <circle cx="0" cy="0" r="2" fill="#e8b020" opacity="0.9"/>
+        </g>
+        <!-- Cluster at ~60 right -->
+        <g transform="translate(24, 136)" filter="url(#soft)">
+          <ellipse cx="0" cy="-10" rx="7" ry="10" fill="url(#petal2)" opacity="0.9"/>
+          <ellipse cx="8" cy="-5" rx="7" ry="10" fill="url(#petal1)" opacity="0.86" transform="rotate(35)"/>
+          <ellipse cx="7" cy="5" rx="7" ry="10" fill="url(#petal3)" opacity="0.88" transform="rotate(80)"/>
+          <ellipse cx="-1" cy="8" rx="7" ry="10" fill="url(#petal1)" opacity="0.85" transform="rotate(140)"/>
+          <ellipse cx="-8" cy="2" rx="7" ry="10" fill="url(#petal2)" opacity="0.87" transform="rotate(205)"/>
+          <circle cx="0" cy="0" r="3.5" fill="#c08a0a" opacity="0.7"/>
+          <circle cx="0" cy="0" r="1.8" fill="#e0a818" opacity="0.9"/>
+        </g>
+        <!-- Cluster ~110 left -->
+        <g transform="translate(-30, 188)" filter="url(#soft)">
+          <ellipse cx="0" cy="-9" rx="8" ry="11" fill="url(#petal3)" opacity="0.9"/>
+          <ellipse cx="8" cy="-5" rx="8" ry="11" fill="url(#petal1)" opacity="0.86" transform="rotate(32)"/>
+          <ellipse cx="7" cy="5" rx="8" ry="11" fill="url(#petal2)" opacity="0.88" transform="rotate(78)"/>
+          <ellipse cx="-1" cy="9" rx="8" ry="11" fill="url(#petal3)" opacity="0.85" transform="rotate(145)"/>
+          <ellipse cx="-8" cy="3" rx="8" ry="11" fill="url(#petal1)" opacity="0.87" transform="rotate(210)"/>
+          <circle cx="0" cy="0" r="4" fill="#b87e08" opacity="0.7"/>
+        </g>
+        <!-- Cluster ~110 right -->
+        <g transform="translate(26, 184)" filter="url(#soft)">
+          <ellipse cx="0" cy="-8" rx="7" ry="10" fill="url(#petal1)" opacity="0.88"/>
+          <ellipse cx="7" cy="-4" rx="7" ry="10" fill="url(#petal3)" opacity="0.84" transform="rotate(36)"/>
+          <ellipse cx="6" cy="5" rx="7" ry="10" fill="url(#petal2)" opacity="0.86" transform="rotate(82)"/>
+          <ellipse cx="-1" cy="8" rx="7" ry="10" fill="url(#petal1)" opacity="0.83" transform="rotate(148)"/>
+          <ellipse cx="-7" cy="2" rx="7" ry="10" fill="url(#petal3)" opacity="0.85" transform="rotate(212)"/>
+          <circle cx="0" cy="0" r="3.5" fill="#c09010" opacity="0.65"/>
+        </g>
+        <!-- Cluster ~165 left -->
+        <g transform="translate(-22, 240)" filter="url(#soft)">
+          <ellipse cx="0" cy="-9" rx="7" ry="10" fill="url(#petal2)" opacity="0.85"/>
+          <ellipse cx="7" cy="-4" rx="7" ry="10" fill="url(#petal1)" opacity="0.81" transform="rotate(34)"/>
+          <ellipse cx="6" cy="5" rx="7" ry="10" fill="url(#petal3)" opacity="0.83" transform="rotate(80)"/>
+          <ellipse cx="-1" cy="8" rx="7" ry="10" fill="url(#petal2)" opacity="0.80" transform="rotate(146)"/>
+          <ellipse cx="-7" cy="2" rx="7" ry="10" fill="url(#petal1)" opacity="0.82" transform="rotate(208)"/>
+          <circle cx="0" cy="0" r="3" fill="#b87c08" opacity="0.6"/>
+        </g>
+        <!-- Buds lower section -->
+        <g transform="translate(-16, 290)">
+          <ellipse cx="0" cy="0" rx="5" ry="8" fill="url(#bud1)" opacity="0.75" transform="rotate(-10)"/>
+        </g>
+        <g transform="translate(15, 287)">
+          <ellipse cx="0" cy="0" rx="5" ry="8" fill="url(#bud1)" opacity="0.72" transform="rotate(8)"/>
+        </g>
+        <g transform="translate(-10, 340)">
+          <ellipse cx="0" cy="0" rx="4" ry="7" fill="url(#bud1)" opacity="0.65" transform="rotate(-5)"/>
+        </g>
+        <g transform="translate(10, 338)">
+          <ellipse cx="0" cy="0" rx="4" ry="7" fill="url(#bud1)" opacity="0.62" transform="rotate(6)"/>
+        </g>
+        <g transform="translate(-6, 390)">
+          <ellipse cx="0" cy="0" rx="3.5" ry="6" fill="url(#bud1)" opacity="0.55" transform="rotate(-8)"/>
+        </g>
+        <g transform="translate(7, 387)">
+          <ellipse cx="0" cy="0" rx="3.5" ry="6" fill="url(#bud1)" opacity="0.52" transform="rotate(5)"/>
+        </g>
+        <g transform="translate(-4, 436)">
+          <ellipse cx="0" cy="0" rx="3" ry="5" fill="url(#bud1)" opacity="0.42" transform="rotate(-4)"/>
+        </g>
+        <g transform="translate(5, 434)">
+          <ellipse cx="0" cy="0" rx="3" ry="5" fill="url(#bud1)" opacity="0.40" transform="rotate(4)"/>
+        </g>
+      </g>
+
+      <!-- ═══ RIGHT CLUSTER ═══ -->
+      <g transform="translate(1380, -10)" opacity="0.85">
+        <path d="M 0 0 C -2 80 4 160 -3 280 C -6 340 2 400 -4 480" stroke="#9db870" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M -1 55 C 18 84 30 104 28 134" stroke="#9db870" stroke-width="1.2" fill="none"/>
+        <path d="M 0 55 C -16 82 -26 102 -24 130" stroke="#9db870" stroke-width="1.2" fill="none"/>
+        <path d="M -2 108 C 20 136 32 156 30 186" stroke="#9db870" stroke-width="1.1" fill="none"/>
+        <path d="M -1 108 C -18 134 -28 154 -26 182" stroke="#9db870" stroke-width="1.1" fill="none"/>
+        <path d="M -3 162 C 16 190 26 210 22 238" stroke="#9db870" stroke-width="1" fill="none"/>
+        <path d="M -2 162 C -14 188 -22 208 -20 235" stroke="#9db870" stroke-width="1" fill="none"/>
+        <path d="M -3 215 C 12 241 18 261 16 287" stroke="#9db870" stroke-width="0.9" fill="none"/>
+        <path d="M -3 215 C -11 239 -17 259 -15 284" stroke="#9db870" stroke-width="0.9" fill="none"/>
+        <path d="M -4 268 C 8 294 13 314 11 338" stroke="#9db870" stroke-width="0.8" fill="none"/>
+        <path d="M -3 268 C -8 292 -12 312 -10 336" stroke="#9db870" stroke-width="0.8" fill="none"/>
+        <path d="M -3 318 C 6 344 9 364 7 387" stroke="#9db870" stroke-width="0.7" fill="none"/>
+        <path d="M -4 318 C -6 342 -9 362 -7 384" stroke="#9db870" stroke-width="0.7" fill="none"/>
+
+        <!-- Right side flower clusters -->
+        <g transform="translate(28, 134)" filter="url(#soft)">
+          <ellipse cx="0" cy="-10" rx="8" ry="11" fill="url(#petal2)" opacity="0.91"/>
+          <ellipse cx="8" cy="-5" rx="8" ry="11" fill="url(#petal1)" opacity="0.87" transform="rotate(32)"/>
+          <ellipse cx="7" cy="5" rx="8" ry="11" fill="url(#petal3)" opacity="0.89" transform="rotate(78)"/>
+          <ellipse cx="-1" cy="9" rx="8" ry="11" fill="url(#petal2)" opacity="0.86" transform="rotate(143)"/>
+          <ellipse cx="-8" cy="3" rx="8" ry="11" fill="url(#petal1)" opacity="0.88" transform="rotate(207)"/>
+          <circle cx="0" cy="0" r="4" fill="#c8940a" opacity="0.7"/>
+          <circle cx="0" cy="0" r="2" fill="#e8b020" opacity="0.9"/>
+        </g>
+        <g transform="translate(-24, 130)" filter="url(#soft)">
+          <ellipse cx="0" cy="-9" rx="7" ry="10" fill="url(#petal1)" opacity="0.89"/>
+          <ellipse cx="8" cy="-4" rx="7" ry="10" fill="url(#petal3)" opacity="0.85" transform="rotate(35)"/>
+          <ellipse cx="7" cy="5" rx="7" ry="10" fill="url(#petal2)" opacity="0.87" transform="rotate(80)"/>
+          <ellipse cx="-1" cy="8" rx="7" ry="10" fill="url(#petal1)" opacity="0.84" transform="rotate(144)"/>
+          <ellipse cx="-8" cy="2" rx="7" ry="10" fill="url(#petal3)" opacity="0.86" transform="rotate(208)"/>
+          <circle cx="0" cy="0" r="3.5" fill="#c08a0a" opacity="0.68"/>
+        </g>
+        <g transform="translate(30, 186)" filter="url(#soft)">
+          <ellipse cx="0" cy="-9" rx="8" ry="11" fill="url(#petal3)" opacity="0.88"/>
+          <ellipse cx="8" cy="-5" rx="8" ry="11" fill="url(#petal2)" opacity="0.84" transform="rotate(33)"/>
+          <ellipse cx="7" cy="5" rx="8" ry="11" fill="url(#petal1)" opacity="0.86" transform="rotate(79)"/>
+          <ellipse cx="-1" cy="9" rx="8" ry="11" fill="url(#petal3)" opacity="0.83" transform="rotate(145)"/>
+          <ellipse cx="-8" cy="3" rx="8" ry="11" fill="url(#petal2)" opacity="0.85" transform="rotate(209)"/>
+          <circle cx="0" cy="0" r="4" fill="#b87e08" opacity="0.68"/>
+        </g>
+        <g transform="translate(-26, 182)" filter="url(#soft)">
+          <ellipse cx="0" cy="-8" rx="7" ry="10" fill="url(#petal2)" opacity="0.86"/>
+          <ellipse cx="7" cy="-4" rx="7" ry="10" fill="url(#petal1)" opacity="0.82" transform="rotate(36)"/>
+          <ellipse cx="6" cy="5" rx="7" ry="10" fill="url(#petal3)" opacity="0.84" transform="rotate(82)"/>
+          <ellipse cx="-1" cy="8" rx="7" ry="10" fill="url(#petal2)" opacity="0.81" transform="rotate(147)"/>
+          <ellipse cx="-7" cy="2" rx="7" ry="10" fill="url(#petal1)" opacity="0.83" transform="rotate(211)"/>
+          <circle cx="0" cy="0" r="3.5" fill="#c09010" opacity="0.63"/>
+        </g>
+        <g transform="translate(22, 238)" filter="url(#soft)">
+          <ellipse cx="0" cy="-8" rx="7" ry="10" fill="url(#petal1)" opacity="0.83"/>
+          <ellipse cx="7" cy="-4" rx="7" ry="10" fill="url(#petal2)" opacity="0.79" transform="rotate(34)"/>
+          <ellipse cx="6" cy="5" rx="7" ry="10" fill="url(#petal3)" opacity="0.81" transform="rotate(80)"/>
+          <ellipse cx="-1" cy="8" rx="7" ry="10" fill="url(#petal1)" opacity="0.78" transform="rotate(146)"/>
+          <ellipse cx="-7" cy="2" rx="7" ry="10" fill="url(#petal2)" opacity="0.80" transform="rotate(208)"/>
+          <circle cx="0" cy="0" r="3" fill="#b87c08" opacity="0.58"/>
+        </g>
+        <!-- Buds right side -->
+        <g transform="translate(16, 287)"><ellipse cx="0" cy="0" rx="5" ry="8" fill="url(#bud1)" opacity="0.72" transform="rotate(10)"/></g>
+        <g transform="translate(-15, 284)"><ellipse cx="0" cy="0" rx="5" ry="8" fill="url(#bud1)" opacity="0.70" transform="rotate(-8)"/></g>
+        <g transform="translate(11, 338)"><ellipse cx="0" cy="0" rx="4" ry="7" fill="url(#bud1)" opacity="0.62" transform="rotate(7)"/></g>
+        <g transform="translate(-10, 336)"><ellipse cx="0" cy="0" rx="4" ry="7" fill="url(#bud1)" opacity="0.60" transform="rotate(-6)"/></g>
+        <g transform="translate(7, 387)"><ellipse cx="0" cy="0" rx="3.5" ry="6" fill="url(#bud1)" opacity="0.52" transform="rotate(5)"/></g>
+        <g transform="translate(-7, 384)"><ellipse cx="0" cy="0" rx="3.5" ry="6" fill="url(#bud1)" opacity="0.50" transform="rotate(-4)"/></g>
+      </g>
+
+      <!-- Drifting fallen petals at bottom -->
+      <g opacity="0.38">
+        <ellipse cx="180" cy="760" rx="6" ry="9" fill="#f5e880" transform="rotate(-28 180 760)"/>
+        <ellipse cx="380" cy="785" rx="5" ry="8" fill="#f9f0a0" transform="rotate(18 380 785)"/>
+        <ellipse cx="620" cy="772" rx="6" ry="9" fill="#f5e870" transform="rotate(-14 620 772)"/>
+        <ellipse cx="820" cy="780" rx="5" ry="8" fill="#f8ee90" transform="rotate(22 820 780)"/>
+        <ellipse cx="1050" cy="768" rx="6" ry="9" fill="#f6e878" transform="rotate(-18 1050 768)"/>
+        <ellipse cx="1240" cy="788" rx="5" ry="8" fill="#f9f0a0" transform="rotate(12 1240 788)"/>
+      </g>
+    </svg>
+    <h1 class="hero-name">Dr. R. Kamala</h1>
+    <p class="hero-years">Daughter &nbsp;·&nbsp; Mother &nbsp;·&nbsp; Aunt &nbsp;·&nbsp; Friend &nbsp;·&nbsp; Teacher</p>
+    <div class="hero-divider"></div>
+    <p class="hero-tagline">The light of every room she ever entered.</p>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" style="padding-top: 2rem;">
+      <div class="reveal">
+      <p class="section-label">Who She Was</p>
+      <h2 class="section-title">About <em>Kamala</em></h2>
+    </div>
+    <div class="about-grid reveal">
+      <div>
+        <div class="photo-placeholder">
+          [ Photo of Kamala ]<br><br>
+          <small>Replace with her photo</small>
+        </div>
+      </div>
+      <div class="about-text">
+        <p>Dr. R. Kamala — known to those closest to her simply as <em>Mini</em> — was, by every account, the happiest person in any room she entered. Not because life was always easy, but because joy was simply the way she moved through the world. She had an extraordinary gift for making people feel seen, loved, and lighter than when they arrived.</p>
+        <p>A brilliant academic — daughter of MKC Nair and Dr. K. Radha, and granddaughter of the legendary Professor K.P.K. Menon — she secured First Rank in M.A. English Literature and went on to become a devoted teacher whose students remember her with a reverence that speaks for itself. She taught at institutions across India, from Kerala to Andhra Pradesh, leaving behind students and colleagues who became family.</p>
+        <p>Kamala was known for her thoughtfulness in the smallest things: she was always the one who arrived with a gift chosen specifically for you, who remembered what you loved, who showed up. She collected meaningful things for the people she cared about — not out of obligation, but because giving was simply in her nature.</p>
+        <p>She faced illness with the same grace and courage with which she faced everything else — smiling, warm, and more concerned about others than herself. She is remembered as a daughter, mother, aunt, teacher, and lifelong friend whose light continues to guide everyone she loved.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE BOOK -->
+  <div id="book" class="full-width-section">
+    <div class="full-width-inner">
+      <div class="reveal">
+        <div class="book-cover">
+          <div>
+            <div class="book-cover-title">The Hall of Silence</div>
+            <div class="book-cover-author">Dr. R. Kamala</div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal">
+        <p class="section-label">The Collection</p>
+        <h2 class="section-title">The <em>Hall of Silence</em><br>Collected Poems</h2>
+        <p class="book-description">A posthumous collection of poems gathered from a lifetime of writing — gathered with love by her family, and now offered to the world as Dr. R. Kamala always gave: generously, wholeheartedly, and with the hope of bringing light into someone's day.</p>
+        <p class="book-description">This book is a gift to all who knew her, and a beautiful introduction for all who did not.</p>
+        <a href="#" class="btn btn-light">Where to Buy ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRIBUTES -->
+  <div id="tributes" class="full-width-section">
+    <div class="full-width-inner">
+      <div class="reveal">
+        <p class="section-label">Notes for the Book</p>
+        <h2 class="section-title">Words Written <em>for Her</em></h2>
+      </div>
+      <div class="tributes-grid">
+
+        <div class="tribute-card reveal" onclick="openTribute(0)">
+          <div class="tribute-text-wrap"><p class="tribute-text">A little girl jumping and dancing around, holding the hands of her Grandpa, is my earliest reminiscence of Kamala. Always cheerful, benevolent and loving, she was also one of the bravest persons I have ever met. The courage and strength exuded by her continue to inspire me to face life with grace and determination and find hope even in the darkest moments. An amazing person, dear Kamala, you may be gone, but you will never be forgotten.</p></div>
+          <div class="tribute-footer"><div><div class="tribute-author">Sindhu</div><div class="tribute-relation">Lifetime friend from childhood</div></div><span class="tribute-read-more">Read more ↗</span></div>
+        </div>
+
+        <div class="tribute-card reveal" onclick="openTribute(1)">
+          <div class="tribute-text-wrap"><p class="tribute-text">Kamala became an instrument of grace, bringing me back to music, encouraging me to record my songs, and helping me rediscover a form of worship that continues in my life even today. She was a radiant soul, always smiling, deeply compassionate, and instinctively drawn to support those in need. She possessed the rare spiritual quality of awakening the gifts in others, gently and selflessly. Even now, it is hard to accept that Kamala is no longer with us. Yet, her spirit lives on — in prayers, in music, and in the lives she quietly transformed.</p></div>
+          <div class="tribute-footer"><div><div class="tribute-author">Harikrishnan</div><div class="tribute-relation">Friend from school, Vidyadhiraja School</div></div><span class="tribute-read-more">Read more ↗</span></div>
+        </div>
+
+        <div class="tribute-card reveal" onclick="openTribute(2)">
+          <div class="tribute-text-wrap"><p class="tribute-text">More than being a colleague to me she often donned the role of a mentor, guiding me through my never ending dilemmas. An exceptional teacher, her passion for teaching has inspired countless students. As a colleague, she brought warmth and kindness — qualities often found lacking in academia — to the department. With her departure I have lost a trusty protective shield, a loving shelter to whose warmth I could always take refuge in, whenever I had some problem.</p></div>
+          <div class="tribute-footer"><div><div class="tribute-author">Dr. Neetha Sasidharan</div><div class="tribute-relation">Former colleague, Institute of English</div></div><span class="tribute-read-more">Read more ↗</span></div>
+        </div>
+
+        <div class="tribute-card reveal" onclick="openTribute(3)">
+          <div class="tribute-text-wrap"><p class="tribute-text">Kamala was smart and intelligent, and yet an embodiment of humility too. A very loving and lovable girl, whom God loved too much, and so took back to His Abode too soon.</p></div>
+          <div class="tribute-footer"><div><div class="tribute-author">Elsie Satheeshan</div><div class="tribute-relation">Professor, Dept. of English — taught Kamala in B.A and M.A</div></div><span class="tribute-read-more">Read more ↗</span></div>
+        </div>
+
+        <div class="tribute-card reveal" onclick="openTribute(4)">
+          <div class="tribute-text-wrap"><p class="tribute-text">Kamala came floating into my orbit when she joined Sanatana Dharma College. We used to address her as "Prakasham Parathunna Pennkutty" — the girl who radiates light. I remember her still as a slender and youthful girl, with romance in her heart, stars in her eyes and a pleasant smile on her lips.</p></div>
+          <div class="tribute-footer"><div><div class="tribute-author">Dr. Mariamma Panjikaran</div><div class="tribute-relation">Former HOD, Sanatana Dharma College, Alappuzha</div></div><span class="tribute-read-more">Read more ↗</span></div>
+        </div>
+
+        <div class="tribute-card reveal" onclick="openTribute(5)">
+          <div class="tribute-text-wrap"><p class="tribute-text">She was not a peevish nerd, but spontaneous and fun-loving. Her lithe frame, graceful movements and long hair made Kamala seem like a fairy drifting in a saree. Yet it was her radiant smile — ever-present, never fading — that was her true hallmark. That big, hearty smile reflected in her dreamy eyes leaving a glint of joy and attractive warmth. Kamala, you burned like a candle to give others light, never counting the cost, even when the cost was life itself. I miss you, my dear friend.</p></div>
+          <div class="tribute-footer"><div><div class="tribute-author">Dr. Swapna Koshy</div><div class="tribute-relation">Academician and Author, research mate</div></div><span class="tribute-read-more">Read more ↗</span></div>
+        </div>
+
+        <div class="tribute-card reveal" onclick="openTribute(6)">
+          <div class="tribute-text-wrap"><p class="tribute-text">In the years we studied together, I always admired Kamala's sharp intellect, love of learning, and passion for teaching. All of us turned to her when lessons felt difficult — she had a rare gift for making even the trickiest concepts simple, the mark of a born teacher. Her voice, laughter, warmth, and compassion remain vivid in my memory, as does the quiet courage she showed when we last met. To say that I miss her would barely outline the void she has left.</p></div>
+          <div class="tribute-footer"><div><div class="tribute-author">Anitha Moosath</div><div class="tribute-relation">Journalist, college mate at Government Women's College</div></div><span class="tribute-read-more">Read more ↗</span></div>
+        </div>
+
+        <div class="tribute-card reveal" onclick="openTribute(7)">
+          <div class="tribute-text-wrap"><p class="tribute-text">Always bubbly and cheerful, not even once have I seen her sulk. She was always smiles and it showed in her twinkling eyes. When I was getting married Kamala accompanied me to invite the lecturers of my college and also my other college mates. During her last years too she was always smiling, not letting out her sadness. We loved Kamala and always will.</p></div>
+          <div class="tribute-footer"><div><div class="tribute-author">Jayasree</div><div class="tribute-relation">College mate</div></div><span class="tribute-read-more">Read more ↗</span></div>
+        </div>
+
+        <div class="tribute-card reveal" onclick="openTribute(8)">
+          <div class="tribute-text-wrap"><p class="tribute-text">"Whom the gods love, die young." Certainly, Kamala was beloved of the gods. She left early leaving behind treasured memories. Though the light is gone, the impact remains. Who can forget her loving, generous, unselfish cheerful nature — qualities that made her so special? True to her name, Kamala was the epitome of purity and beauty of heart and head. Forever remembered. Forever missed.</p></div>
+          <div class="tribute-footer"><div><div class="tribute-author">Rathi Gopakumar</div><div class="tribute-relation">Dept. of English, Government Women's College</div></div><span class="tribute-read-more">Read more ↗</span></div>
+        </div>
+
+        <div class="tribute-card reveal" onclick="openTribute(9)">
+          <div class="tribute-text-wrap"><p class="tribute-text">Kamala — fondly called Mini — was a student of mine. The name Kamala means Lotus. A very sweet and bright girl, her radiant smile makes her unforgettable. God takes away from us the people we love most in life. Kamala was loved by all.</p></div>
+          <div class="tribute-footer"><div><div class="tribute-author">Prof. K. Lakshmikutty (Retd.)</div><div class="tribute-relation">Dept. of English, Government Women's College</div></div><span class="tribute-read-more">Read more ↗</span></div>
+        </div>
+
+        <div class="tribute-card reveal" onclick="openTribute(10)">
+          <div class="tribute-text-wrap"><p class="tribute-text">Kamaledathi embodied elegance, carrying herself with effortless grace. She is not gone — she has transformed into memory, into meaning, into a presence that time cannot erase. Kamaledathi is no longer beside me, but she walks with me — on every Monday that dawns, in every lunch shared with love, in every moment when kindness finds a voice. Forever remembered. Forever missed. Forever my Kamaledathi.</p></div>
+          <div class="tribute-footer"><div><div class="tribute-author">Muneera</div><div class="tribute-relation">Colleague, University College, Thiruvananthapuram</div></div><span class="tribute-read-more">Read more ↗</span></div>
+        </div>
+
+        <div class="tribute-card reveal" onclick="openTribute(11)">
+          <div class="tribute-text-wrap"><p class="tribute-text">"Kamala Amma" — the person who called me "Beti." My first mentor and influencer. She was a remarkable woman who was truly an all-rounder in every sense of the word. She balanced her many roles with grace, excelling in her responsibilities while always making time to care for others. Her legacy of resilience, kindness, and excellence will be remembered with love, today and always.</p></div>
+          <div class="tribute-footer"><div><div class="tribute-author">Lahari Chinmaya Patri</div><div class="tribute-relation">Teacher, Bhoja Reddy Engineering College, Andhra Pradesh</div></div><span class="tribute-read-more">Read more ↗</span></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- REMEMBRANCE WALL -->
+  <section id="remember">
+    <div class="reveal">
+      <p class="section-label">Community</p>
+      <h2 class="section-title">Leave a <em>Memory</em></h2>
+      <p class="remember-intro">If you knew Kamala, were touched by her words, or simply want to leave a note for her family — this space is for you.</p>
+    </div>
+
+    <div class="remember-form reveal">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="msg-name">Your Name</label>
+          <input type="text" id="msg-name" placeholder="Your name">
+        </div>
+        <div class="form-group">
+          <label for="msg-relation">How did you know her?</label>
+          <select id="msg-relation">
+            <option value="">Select (optional)</option>
+            <option>Family</option>
+            <option>Friend</option>
+            <option>Colleague</option>
+            <option>Former student</option>
+            <option>Reader of her work</option>
+            <option>Neighbor</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="msg-text">Your message</label>
+        <textarea id="msg-text" placeholder="Share a memory, a thought, or a note for her family..." maxlength="500" oninput="updateCount()"></textarea>
+        <div class="char-count"><span id="char-num">0</span> / 500</div>
+      </div>
+      <button class="submit-btn" onclick="submitMessage()">Leave Your Note</button>
+      <div class="success-msg" id="success-msg">✦ Thank you. Your memory has been added to the wall below.</div>
+    </div>
+
+    <div id="wall-section" style="display:none;">
+      <p class="wall-heading">Memories left by those who loved her</p>
+      <p class="wall-count" id="wall-count"></p>
+    </div>
+    <div class="messages-wall" id="messages-wall">
+      <div class="empty-wall" id="empty-wall">Be the first to leave a memory for Mini...</div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="reveal">
+      <p class="section-label">Photographs</p>
+      <h2 class="section-title">A Life in <em>Pictures</em></h2>
+    </div>
+    <div class="gallery-grid reveal">
+      <div class="gallery-item" onclick="openLightbox(0)">
+        <div class="gallery-photo-placeholder">[ Photo 1 ]<br><small>Add your photo here</small></div>
+        <div class="gallery-caption">A favourite moment</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(1)">
+        <div class="gallery-photo-placeholder" style="background:linear-gradient(135deg,#c4826a,#8a9e8a)">[ Photo 2 ]</div>
+        <div class="gallery-caption">In her garden</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(2)">
+        <div class="gallery-photo-placeholder" style="background:linear-gradient(135deg,#8a9e8a,#7a5c3a)">[ Photo 3 ]</div>
+        <div class="gallery-caption">With family</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(3)">
+        <div class="gallery-photo-placeholder" style="background:linear-gradient(135deg,#b5895a,#c4826a)">[ Photo 4 ]</div>
+        <div class="gallery-caption">Her writing desk</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(4)">
+        <div class="gallery-photo-placeholder" style="background:linear-gradient(135deg,#7a5c3a,#b5895a)">[ Photo 5 ]</div>
+        <div class="gallery-caption">A quiet afternoon</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(5)">
+        <div class="gallery-photo-placeholder" style="background:linear-gradient(135deg,#c4826a,#7a5c3a)">[ Photo 6 ]</div>
+        <div class="gallery-caption">Always reading</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-name">Dr. R. Kamala</div>
+    <div class="footer-sub">Daughter &nbsp;·&nbsp; Mother &nbsp;·&nbsp; Aunt &nbsp;·&nbsp; Friend &nbsp;·&nbsp; Teacher</div>
+    <ul class="footer-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#book">The Book</a></li>
+      <li><a href="#tributes">Tributes</a></li>
+      <li><a href="#remember">Remembrance Wall</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+    </ul>
+    <div class="footer-copy">The Hall of Silence · Published with love by her family · © 2026</div>
+  </footer>
+
+  <!-- TRIBUTE MODAL -->
+  <div class="tribute-modal-overlay" id="tribute-modal" onclick="closeTribute(event)">
+    <div class="tribute-modal">
+      <button class="tribute-modal-close" onclick="closeTribute()">✕</button>
+      <p class="tribute-modal-text" id="modal-text"></p>
+      <div class="tribute-modal-author" id="modal-author"></div>
+      <div class="tribute-modal-relation" id="modal-relation"></div>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <div class="lightbox-content">
+      <div class="lightbox-img-placeholder" id="lightbox-img">[ Photo ]</div>
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+  </div>
+
+  <script>
+    // ── NAV ──
+    function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
+    function closeNav()  { document.getElementById('navLinks').classList.remove('open'); }
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // ── SCROLL REVEAL ──
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(r => observer.observe(r));
+
+    // ── TRIBUTE MODAL ──
+    const tributeData = [
+      { author: 'Sindhu', relation: 'Lifetime friend from childhood', title: 'My Brave Friend', text: 'A little girl jumping and dancing around, holding the hands of her Grandpa, is my earliest reminiscence of Kamala. Within no time we became best buddies. Our families bonded well and both of us would spend our childhood days at each other\'s place often. Always cheerful, benevolent and loving, she was also one of the bravest persons I have ever met. The courage and strength exuded by her continue to inspire me to face life with grace and determination and find hope even in the darkest moments.\n\nIt is indeed gratifying to know that her talent as a poet will now be recognized through this anthology of poems written by her. My sincere appreciation to Kamala\'s family who made it possible. An amazing person, dear Kamala, you may be gone, but you will never be forgotten.' },
+      { author: 'Harikrishnan', relation: 'Friend from school, Vidyadhiraja School', title: 'A Divine Note in the Symphony of Life', text: 'Kamala was my batchmate at Vidyadhiraja School. We sang together in group songs during school festivals and were among those who rendered the school prayer every morning. Kamala was a singer trained in classical music, and even in those early years, her voice carried devotion and depth.\n\nAfter matriculation, life took us on different journeys. It was Kamala who took the initiative to contact our batchmates after 30 years and organize the reunion. I could sense a quiet grace in her leadership, an ability to bring hearts together with warmth, purpose, and humility.\n\nA few months later, Kamala informed me that she had been diagnosed with a serious ailment. There was courage in her voice, and an unspoken acceptance of life\'s larger design. She asked me to send her a song I used to sing during our school days — a request that changed my own journey. Professional commitments had prevented me from singing for more than ten years. Her request felt like a divine nudge. I began singing again, recording devotional songs, and sharing them with Kamala, unaware then that this was also a healing path for me.\n\nIn ways beyond my understanding, Kamala became an instrument of grace, bringing me back to music and helping me rediscover a form of worship that continues in my life even today. She was a radiant soul, always smiling, deeply compassionate, and instinctively drawn to support those in need. She possessed the rare spiritual quality of awakening the gifts in others, gently and selflessly.\n\nEven now, it is hard to accept that Kamala is no longer with us. Yet, her spirit lives on — in prayers, in music, and in the lives she quietly transformed.' },
+      { author: 'Dr. Neetha Sasidharan', relation: 'Former colleague, Institute of English', title: '', text: 'I met Kamala Chechi during my research days at the Institute of English. With her friendly nature and exuberance, it was easy to like her and be friends with her, a bond that grew stronger over the years. More than being a colleague to me she often donned the role of a mentor, guiding me through my never ending dilemmas.\n\nAn exceptional teacher, her passion for teaching has inspired countless students. Her dedication to her craft was evident in every lecture as is vouched by her students. As a colleague, she brought warmth and kindness — qualities often found lacking in academia — to the department. With her departure I have lost a trusty protective shield, a loving shelter to whose warmth I could take refuge in, whenever I had some problem.' },
+      { author: 'Elsie Satheeshan', relation: 'Professor, Dept. of English — taught Kamala in B.A and M.A', title: '', text: 'Kamala was smart and intelligent, and yet an embodiment of humility too. A very loving and lovable girl, whom God loved too much, and so took back to His Abode too soon.' },
+      { author: 'Dr. Mariamma Panjikaran', relation: 'Former HOD, Sanatana Dharma College, Alappuzha', title: '', text: 'Kamala came floating into my orbit when she joined Sanatana Dharma College. She earnestly took up her first teaching assignment. Students liked her and her classes, which were both interesting and informative. For the rest of us she was either a daughter or a sister. We used to address her as "Prakasham Parathunna Pennkutty" — the girl who radiates light. I remember her still as a slender and youthful girl, with romance in her heart, stars in her eyes and a pleasant smile on her lips.' },
+      { author: 'Dr. Swapna Koshy', relation: 'Academician and Author, research mate', title: 'Kamala, my friend…', text: 'I first heard of Kamala when I was an undergraduate student of English Literature at Women\'s College, Trivandrum. She was my senior, spoken of by classmates with a quiet reverence. As the granddaughter of the legendary Professor K.P.K. Menon and daughter of the renowned academic Dr. K. Radha, both English Professors, Kamala seemed to inhabit an inherited aura of excellence. When she secured the First Rank for M.A. English Literature, my awe of her deepened.\n\nThat distance vanished when I joined the Institute of English for Doctoral studies. Through mutual friends I quickly realized how wrong my initial assumptions had been. She was not a peevish nerd, but spontaneous and fun-loving; we hardly spoke of studies at all! Our bond deepened further when we discovered a shared history: our grandfathers had known each other.\n\nAt the Institute, we were inseparable. Her social circle was vast, encompassing almost everyone within the university\'s orbit. Despite her impressive academic lineage, and her own achievements, she was remarkably humble, carrying no \'airs\' about herself. Her lithe frame, graceful movements and long hair made Kamala seem like a fairy drifting in a saree. Yet it was her radiant smile — ever-present, never fading — that was her true hallmark.\n\nShe had made it a habit to visit me in my hostel every single morning. When she came from Alappuzha, she always brought a thoughtful gift — a quirky nighty or a dupatta she thought I\'d like. She was generous to a fault, giving freely of her time, her means, and her heart.\n\nAt her daughter\'s wedding, we reunited — but she was the "bright absentee." That would have been a grand carnival for her, she missed it and we all missed her.\n\nKamala, you burned like a candle to give others light, never counting the cost, even when the cost was life itself. I miss you, my dear friend. Yet your memory blooms like an eternal lotus in my heart, untouched by time.' },
+      { author: 'Anitha Moosath', relation: 'Journalist, college mate at Government Women\'s College', title: '', text: 'In the years we studied together, I always admired Kamala\'s sharp intellect, love of learning, and passion for teaching. All of us turned to her when lessons felt difficult — she had a rare gift for making even the trickiest concepts simple, the mark of a born teacher.\n\nHer voice, laughter, warmth, and compassion remain vivid in my memory, as does the quiet courage she showed when we last met. To say that I miss her would barely outline the void she has left.' },
+      { author: 'Jayasree', relation: 'College mate', title: '', text: 'I\'m happy I met Kamala in college. On first sight, how simple and humble she looked… then I noticed she was a favourite of the English department and her school mates. We were together in Pre Degree and BA. Always bubbly and cheerful, not even once have I seen her sulk. She was always smiles and it showed in her twinkling eyes.\n\nWhen I was getting married Kamala accompanied me to invite the lecturers of my college and also my other college mates. During her last years too she was always smiling, not letting out her sadness. We loved Kamala and always will.' },
+      { author: 'Rathi Gopakumar', relation: 'Dept. of English, Government Women\'s College', title: '', text: '"Whom the gods love, die young." Certainly, Kamala was beloved of the gods. She left early leaving behind treasured memories. Though the light is gone, the impact remains. Who can forget her loving, generous, unselfish cheerful nature — qualities that made her so special? True to her name, Kamala was the epitome of purity and beauty of heart and head. Forever remembered. Forever missed.' },
+      { author: 'Prof. K. Lakshmikutty (Retd.)', relation: 'Dept. of English, Government Women\'s College', title: '', text: 'Kamala — fondly called Mini — was a student of mine. The name Kamala means Lotus. A very sweet and bright girl, her radiant smile makes her unforgettable. God takes away from us the people we love most in life. Kamala was loved by all.' },
+      { author: 'Muneera', relation: 'Colleague, University College, Thiruvananthapuram', title: 'Down the lane of memory; With my Kamaledathi', text: 'Some friendships do not need decades. They bloom in silence, flourish in brief seasons, and stay forever. My bond with Dr. R. Kamala — whom I called Kamaledathi — was one such sacred connection. We shared only five years together as colleagues and friends, but in that time, we became something deeper than friends; we became each other\'s quiet strength.\n\nKamaledathi embodied elegance, carrying herself with effortless grace. Her carefully chosen sarees, earrings, bangles and the natural radiant smile made her different. Her gentle, kind, open, loquacious behaviour made her extraordinary. She was down-to-earth and effortlessly warm, approachable to students, colleagues and friends alike. A passionate teacher, she found joy in spreading light in the classroom, in conversations, in celebrations both big and small.\n\nMarch 2014 drifted in heavy with some unspoken fears. The endless tests, the bronchoscopy, and finally, the cruel certainty of cancer shook us to the core. She accepted her truth with grace and chose to fight bravely. Despite pain and fatigue, she welcomed me with care, never letting illness diminish her warmth or dignity.\n\nEven within hospital walls, she created a garden of friendship, touching doctors, nurses, patients, and strangers alike. She celebrated life in every moment — festivals, birthdays, and ordinary days — with a spirit that remained unshaken.\n\nKamaledathi is no longer beside me, but she walks with me — on every Monday that dawns, in every lunch shared with love, in every moment when kindness finds a voice. She is not gone, she has transformed — into memory, into meaning, into a presence that time cannot erase.\n\nForever remembered. Forever missed. Forever my Kamaledathi.' },
+      { author: 'Lahari Chinmaya Patri', relation: 'Teacher, Bhoja Reddy Engineering College, Andhra Pradesh', title: '"Kamala Amma"', text: '"Kamala Amma" — the person who called me "Beti" (a daughter). My first Mentor and Influencer in BRECW Hyderabad. Her absence is deeply felt. She is a remarkable woman who was truly an all-rounder in every sense of the word. She balanced her many roles with grace, excelling in her responsibilities while always making time to care for others.\n\nAs far as I know, she was a hardworking and a compassionate woman. She inspired many people around her through her strength, dedication, and positive spirit. Her presence touched many lives, and her legacy of resilience, kindness, and excellence will be remembered with utmost love and respect today and always.\n\nI feel truly fortunate to have had the opportunity to work and to learn so many new things along the way with Kamala Amma. Her versatility, dedication, caring nature and willingness to share knowledge made my experience meaningful. Working alongside her was both inspiring and enriching.' }
+    ];
+
+    function openTribute(index) {
+      const t = tributeData[index];
+      document.getElementById('modal-text').textContent = t.text;
+      document.getElementById('modal-author').textContent = t.author;
+      document.getElementById('modal-relation').textContent = t.relation;
+      document.getElementById('tribute-modal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeTribute(e) {
+      if (!e || e.target === document.getElementById('tribute-modal') || e.target.classList.contains('tribute-modal-close')) {
+        document.getElementById('tribute-modal').classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    // ── CHAR COUNT ──
+    function updateCount() {
+      document.getElementById('char-num').textContent = document.getElementById('msg-text').value.length;
+    }
+
+    // ── REMEMBRANCE WALL (localStorage) ──
+    const STORAGE_KEY = 'kamala_memories_v1';
+
+    function loadMessages() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch { return []; }
+    }
+
+    function saveMessages(msgs) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(msgs)); } catch {}
+    }
+
+    function submitMessage() {
+      const name = document.getElementById('msg-name').value.trim();
+      const relation = document.getElementById('msg-relation').value;
+      const text = document.getElementById('msg-text').value.trim();
+
+      if (!name || !text) {
+        alert('Please enter your name and a message.');
+        return;
+      }
+
+      const msgs = loadMessages();
+      msgs.unshift({ name, relation, text, date: new Date().toISOString() });
+      saveMessages(msgs);
+      renderWall();
+
+      document.getElementById('msg-name').value = '';
+      document.getElementById('msg-relation').value = '';
+      document.getElementById('msg-text').value = '';
+      document.getElementById('char-num').textContent = '0';
+
+      const success = document.getElementById('success-msg');
+      success.style.display = 'block';
+      setTimeout(() => success.style.display = 'none', 4000);
+
+      // scroll to wall
+      setTimeout(() => {
+        document.getElementById('messages-wall').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 300);
+    }
+
+    function renderWall() {
+      const msgs = loadMessages();
+      const wall = document.getElementById('messages-wall');
+      const emptyEl = document.getElementById('empty-wall');
+      const wallSection = document.getElementById('wall-section');
+      const countEl = document.getElementById('wall-count');
+
+      if (msgs.length === 0) {
+        emptyEl.style.display = 'block';
+        wallSection.style.display = 'none';
+        wall.innerHTML = '';
+        wall.appendChild(emptyEl);
+        return;
+      }
+
+      emptyEl.style.display = 'none';
+      wallSection.style.display = 'block';
+      countEl.textContent = msgs.length === 1
+        ? '1 memory shared'
+        : `${msgs.length} memories shared`;
+
+      wall.innerHTML = '';
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+      msgs.forEach(m => {
+        const d = new Date(m.date);
+        const dateStr = `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+        const card = document.createElement('div');
+        card.className = 'message-card';
+        card.innerHTML = `
+          <div class="message-text">"${m.text}"</div>
+          <div class="message-meta">
+            <span class="message-name">${m.name}</span>${m.relation ? ` &nbsp;·&nbsp; <em>${m.relation}</em>` : ''}<br>
+            <span style="font-size:0.72rem;opacity:0.7">${dateStr}</span>
+          </div>`;
+        wall.appendChild(card);
+      });
+    }
+
+    // Load wall on page ready
+    renderWall();
+
+    // ── GALLERY ──
+    const captions = [
+      'A favourite moment', 'In her garden', 'With family',
+      'Her writing desk', 'A quiet afternoon', 'Always reading'
+    ];
+
+    function openLightbox(index) {
+      document.getElementById('lightbox-img').textContent = `[ Photo ${index + 1} — Replace with real image ]`;
+      document.getElementById('lightbox-caption').textContent = captions[index];
+      document.getElementById('lightbox').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox(e) {
+      if (!e || e.target === document.getElementById('lightbox') || e.target.classList.contains('lightbox-close')) {
+        document.getElementById('lightbox').classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        closeTribute({ target: document.getElementById('tribute-modal') });
+        closeLightbox({ target: document.getElementById('lightbox') });
+      }
+    });
+
+    // ── CONTACT ──
+    function submitContact(btn) {
+      document.getElementById('contact-success').style.display = 'block';
+      btn.textContent = 'Sent ✓';
+      btn.disabled = true;
+      setTimeout(() => document.getElementById('contact-success').style.display = 'none', 5000);
+    }
+  </script>
+</body>
+</html>
