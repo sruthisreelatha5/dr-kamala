@@ -1,4 +1,5 @@
 import ScrollReveal from "@/components/ScrollReveal/ScrollReveal";
+import Image from "next/image";
 import styles from "./Book.module.css";
 
 export default function Book() {
@@ -6,12 +7,14 @@ export default function Book() {
 		<div id="book" className={styles.book}>
 			<div className={styles.inner}>
 				<ScrollReveal>
-					<div className={styles.bookCover}>
-						<div>
-							<div className={styles.bookCoverTitle}>The Hall of Silence</div>
-							<div className={styles.bookCoverAuthor}>Dr. R. Kamala</div>
-						</div>
-					</div>
+					<Image
+						src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-y919GCCugZqltJCw6Y00447Bx8V0Vn.png"
+						alt="The Hall of Silence book cover"
+						width={300}
+						height={450}
+						className={styles.bookCoverImage}
+						priority
+					/>
 				</ScrollReveal>
 				<ScrollReveal>
 					<p className={`section-label ${styles.sectionLabel}`}>The Collection</p>
