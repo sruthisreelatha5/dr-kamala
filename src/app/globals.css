@@ -1,0 +1,153 @@
+:root {
+	--cream: #faf6f0;
+	--warm-white: #fefcf8;
+	--ink: #2c2416;
+	--sepia: #7a5c3a;
+	--sepia-light: #b5895a;
+	--rose: #c4826a;
+	--rose-light: #e8c4b4;
+	--sage: #8a9e8a;
+	--muted: #9e8e7a;
+	--card-bg: #fdf8f2;
+	--border: #e8ddd0;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	background-color: var(--cream);
+	color: var(--ink);
+	font-family: var(--font-sans), "Lato", sans-serif;
+	font-weight: 300;
+	line-height: 1.8;
+	position: relative;
+	overflow-x: hidden;
+}
+
+/* Grain texture overlay */
+body::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+	pointer-events: none;
+	z-index: 1000;
+	opacity: 0.4;
+}
+
+/* ── SHARED SECTION STYLES ── */
+.section-label {
+	font-size: 0.7rem;
+	letter-spacing: 0.25em;
+	text-transform: uppercase;
+	color: var(--rose);
+	margin-bottom: 0.8rem;
+}
+
+.section-title {
+	font-family: var(--font-serif), "Cormorant Garamond", serif;
+	font-size: clamp(2rem, 5vw, 3.2rem);
+	font-weight: 400;
+	color: var(--ink);
+	line-height: 1.2;
+	margin-bottom: 2.5rem;
+}
+
+.section-title em {
+	font-style: italic;
+	color: var(--sepia);
+}
+
+/* ── BUTTONS ── */
+.btn {
+	display: inline-block;
+	padding: 0.8rem 2rem;
+	font-size: 0.75rem;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	text-decoration: none;
+	border-radius: 1px;
+	transition: all 0.3s;
+}
+
+.btn-light {
+	background: transparent;
+	color: var(--cream);
+	border: 1px solid rgba(250, 246, 240, 0.4);
+}
+
+.btn-light:hover {
+	background: rgba(250, 246, 240, 0.1);
+	border-color: var(--cream);
+}
+
+.btn-dark {
+	background: var(--ink);
+	color: var(--cream);
+	border: 1px solid var(--ink);
+}
+
+.btn-dark:hover {
+	background: var(--sepia);
+	border-color: var(--sepia);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+	from {
+		opacity: 0;
+		transform: translateY(24px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes scrollPulse {
+	0%,
+	100% {
+		opacity: 0.4;
+		transform: scaleY(1);
+	}
+	50% {
+		opacity: 1;
+		transform: scaleY(1.1);
+	}
+}
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+	opacity: 0;
+	transform: translateY(30px);
+	transition:
+		opacity 0.8s ease,
+		transform 0.8s ease;
+}
+
+.reveal.visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+/* ── SUCCESS MESSAGE ── */
+.success-msg {
+	display: none;
+	padding: 1rem 1.5rem;
+	background: rgba(138, 158, 138, 0.15);
+	border: 1px solid var(--sage);
+	color: var(--sage);
+	font-size: 0.9rem;
+	margin-top: 1rem;
+	text-align: center;
+}
