@@ -1,15 +1,16 @@
+import ScrollReveal from "@/components/ScrollReveal/ScrollReveal";
 import styles from "./About.module.css";
 
 export default function About() {
 	return (
 		<section id="about" className={styles.about}>
-			<div className="reveal">
+			<ScrollReveal>
 				<p className="section-label">Who She Was</p>
 				<h2 className="section-title">
 					About <em>Kamala</em>
 				</h2>
-			</div>
-			<div className={`${styles.aboutGrid} reveal`}>
+			</ScrollReveal>
+			<ScrollReveal className={styles.aboutGrid}>
 				<div>
 					<div className={styles.photoPlaceholder}>
 						[ Photo of Kamala ]
@@ -45,7 +46,7 @@ export default function About() {
 						everyone she loved.
 					</p>
 				</div>
-			</div>
+			</ScrollReveal>
 		</section>
 	);
 }

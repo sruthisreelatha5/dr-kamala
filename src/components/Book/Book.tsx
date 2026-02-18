@@ -1,18 +1,19 @@
+import ScrollReveal from "@/components/ScrollReveal/ScrollReveal";
 import styles from "./Book.module.css";
 
 export default function Book() {
 	return (
 		<div id="book" className={styles.book}>
 			<div className={styles.inner}>
-				<div className="reveal">
+				<ScrollReveal>
 					<div className={styles.bookCover}>
 						<div>
 							<div className={styles.bookCoverTitle}>The Hall of Silence</div>
 							<div className={styles.bookCoverAuthor}>Dr. R. Kamala</div>
 						</div>
 					</div>
-				</div>
-				<div className="reveal">
+				</ScrollReveal>
+				<ScrollReveal>
 					<p className={`section-label ${styles.sectionLabel}`}>The Collection</p>
 					<h2 className={`section-title ${styles.sectionTitle}`}>
 						The <em className={styles.sectionTitleEm}>Hall of Silence</em>
@@ -31,7 +32,7 @@ export default function Book() {
 					<a href="#" className="btn btn-light">
 						Where to Buy ↗
 					</a>
-				</div>
+				</ScrollReveal>
 			</div>
 		</div>
 	);
