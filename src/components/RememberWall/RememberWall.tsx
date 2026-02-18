@@ -2,25 +2,33 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import ScrollReveal from "@/components/ScrollReveal/ScrollReveal";
+import { supabase } from "@/lib/supabase";
 import type { WallMessage } from "@/types";
 import styles from "./RememberWall.module.css";
 
-const STORAGE_KEY = "kamala_memories_v1";
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-function loadMessages(): WallMessage[] {
+async function loadMessages(): Promise<WallMessage[]> {
 	try {
-		return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-	} catch {
-		return [];
-	}
-}
+		const { data, error } = await supabase
+			.from("memories")
+			.select("*")
+			.order("created_at", { ascending: false });
 
-function saveMessages(msgs: WallMessage[]) {
-	try {
-		localStorage.setItem(STORAGE_KEY, JSON.stringify(msgs));
-	} catch {
-		// localStorage unavailable
+		if (error) {
+			console.error("Error loading messages:", error);
+			return [];
+		}
+
+		return (data || []).map((msg) => ({
+			name: msg.name,
+			relation: msg.relation,
+			text: msg.message,
+			date: msg.created_at,
+		}));
+	} catch (err) {
+		console.error("Error loading messages:", err);
+		return [];
 	}
 }
 
@@ -38,35 +46,50 @@ export default function RememberWall() {
 	const wallRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		setMessages(loadMessages());
+		loadMessages().then(setMessages);
 	}, []);
 
-	const handleSubmit = useCallback(() => {
+	const handleSubmit = useCallback(async () => {
 		if (!name.trim() || !text.trim()) {
 			alert("Please enter your name and a message.");
 			return;
 		}
 
-		const newMessage: WallMessage = {
-			name: name.trim(),
-			relation,
-			text: text.trim(),
-			date: new Date().toISOString(),
-		};
+		try {
+			const { error } = await supabase.from("memories").insert([
+				{
+					name: name.trim(),
+					relation,
+					message: text.trim(),
+					created_at: new Date().toISOString(),
+				},
+			]);
 
-		const updated = [newMessage, ...messages];
-		saveMessages(updated);
-		setMessages(updated);
-		setName("");
-		setRelation("");
-		setText("");
-		setShowSuccess(true);
+			if (error) {
+				console.error("Error inserting message:", error);
+				alert("Failed to save your memory. Please try again.");
+				return;
+			}
 
-		setTimeout(() => setShowSuccess(false), 4000);
-		setTimeout(() => {
-			wallRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-		}, 300);
-	}, [name, relation, text, messages]);
+			setName("");
+			setRelation("");
+			setText("");
+			setShowSuccess(true);
+
+			setTimeout(() => setShowSuccess(false), 4000);
+
+			// Reload messages from database
+			const updatedMessages = await loadMessages();
+			setMessages(updatedMessages);
+
+			setTimeout(() => {
+				wallRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+			}, 300);
+		} catch (err) {
+			console.error("Error submitting message:", err);
+			alert("Failed to save your memory. Please try again.");
+		}
+	}, [name, relation, text]);
 
 	return (
 		<section id="remember" className={styles.remember}>
