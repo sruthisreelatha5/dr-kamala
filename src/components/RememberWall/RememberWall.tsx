@@ -235,7 +235,7 @@ export default function RememberWall() {
 
 			{!loading && messages.length > 0 && (
 				<div>
-					<p className={styles.wallHeading}>Notes from loves ones </p>
+					<p className={styles.wallHeading}>Notes from loved ones </p>
 					<p className={styles.wallCount}>
 						{messages.length === 1 ? "1 memory shared" : `${messages.length} memories shared`}
 					</p>
