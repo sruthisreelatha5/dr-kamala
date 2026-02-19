@@ -13,7 +13,9 @@ export default function Tributes() {
 	const [selectedTribute, setSelectedTribute] = useState<Tribute | null>(null);
 	const isMobile = useMobile();
 
-	const openTribute = useCallback((tribute: Tribute) => {
+	const openTribute = useCallback((index: number) => {
+		const tribute = tributes[index];
+		if (!tribute) return;
 		setSelectedTribute(tribute);
 		document.body.style.overflow = "hidden";
 	}, []);
@@ -47,9 +49,9 @@ export default function Tributes() {
 					</h2>
 				</ScrollReveal>
 				<div className={styles.tributesGrid}>
-					{tributes.map((tribute) => (
+					{tributes.map((tribute, index) => (
 						<ScrollReveal key={tribute.author}>
-							<TributeCard tribute={tribute} onClick={() => openTribute(tribute)} />
+							<TributeCard tribute={tribute} index={index} onOpen={openTribute} />
 						</ScrollReveal>
 					))}
 				</div>

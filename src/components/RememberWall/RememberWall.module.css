@@ -119,6 +119,8 @@
 	padding: 1.5rem;
 	position: relative;
 	animation: fadeUp 0.5s ease both;
+	content-visibility: auto;
+	contain-intrinsic-size: 260px;
 }
 
 .messageText {

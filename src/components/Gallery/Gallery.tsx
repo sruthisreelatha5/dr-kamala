@@ -1,12 +1,77 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import type { KeyboardEvent as ReactKeyboardEvent } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import ScrollReveal from "@/components/ScrollReveal/ScrollReveal";
 import { galleryItems } from "@/data/gallery";
 import { useMobile } from "@/hooks/mobilehooks";
 import type { GalleryItem } from "@/types";
 import styles from "./Gallery.module.css";
+
+const BENTO_ITEM_CLASS_NAMES = [
+	styles.galleryItem1,
+	styles.galleryItem2,
+	styles.galleryItem3,
+	styles.galleryItem4,
+	styles.galleryItem5,
+	styles.galleryItem6,
+];
+
+interface GalleryCardProps {
+	areaClassName: string;
+	index: number;
+	item: GalleryItem;
+	onOpen: (item: GalleryItem, index: number) => void;
+}
+
+const GalleryCard = memo(function GalleryCard({
+	areaClassName,
+	index,
+	item,
+	onOpen,
+}: GalleryCardProps) {
+	const handleOpen = useCallback(() => {
+		onOpen(item, index);
+	}, [index, item, onOpen]);
+
+	const handleKeyDown = useCallback(
+		(e: ReactKeyboardEvent<HTMLDivElement>) => {
+			if (e.key !== "Enter" && e.key !== " ") return;
+			e.preventDefault();
+			onOpen(item, index);
+		},
+		[index, item, onOpen],
+	);
+
+	return (
+		<div
+			className={`${styles.galleryItem} ${areaClassName}`}
+			onClick={handleOpen}
+			onKeyDown={handleKeyDown}
+			role="button"
+			tabIndex={0}
+			aria-label={`Open photo ${index + 1}: ${item.caption}`}
+		>
+			{item.image ? (
+				<div className={styles.galleryMedia}>
+					<Image
+						src={item.image}
+						alt={item.caption}
+						fill
+						sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 34vw, 26vw"
+						className={styles.galleryPhoto}
+					/>
+				</div>
+			) : (
+				<div className={styles.galleryPhotoPlaceholder} style={{ background: item.gradient }}>
+					[ Photo {index + 1} ]
+				</div>
+			)}
+			<div className={styles.galleryCaption}>{item.caption}</div>
+		</div>
+	);
+});
 
 export default function Gallery() {
 	const [lightboxItem, setLightboxItem] = useState<GalleryItem | null>(null);
@@ -56,37 +121,13 @@ export default function Gallery() {
 			<ScrollReveal>
 				<div className={styles.galleryGrid}>
 					{galleryItems.map((item, index) => (
-						<div
-							className={styles.galleryItem}
+						<GalleryCard
 							key={item.caption}
-							onClick={() => openLightbox(item, index)}
-							onKeyDown={(e) => {
-								if (e.key === "Enter" || e.key === " ") openLightbox(item, index);
-							}}
-							role="button"
-							tabIndex={0}
-							aria-label={`Open photo ${index + 1}: ${item.caption}`}
-						>
-							{item.image ? (
-								<div className={styles.galleryMedia}>
-									<Image
-										src={item.image}
-										alt={item.caption}
-										fill
-										sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 33vw"
-										className={styles.galleryPhoto}
-									/>
-								</div>
-							) : (
-								<div
-									className={styles.galleryPhotoPlaceholder}
-									style={{ background: item.gradient }}
-								>
-									[ Photo {index + 1} ]
-								</div>
-							)}
-							<div className={styles.galleryCaption}>{item.caption}</div>
-						</div>
+							item={item}
+							index={index}
+							areaClassName={BENTO_ITEM_CLASS_NAMES[index] ?? ""}
+							onOpen={openLightbox}
+						/>
 					))}
 				</div>
 			</ScrollReveal>

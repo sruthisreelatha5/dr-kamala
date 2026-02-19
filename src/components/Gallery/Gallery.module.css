@@ -6,8 +6,12 @@
 
 .galleryGrid {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	grid-template-rows: auto;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	grid-template-areas:
+		"item1 item1 item2 item3"
+		"item1 item1 item4 item4"
+		"item5 item6 item4 item4";
+	grid-template-rows: repeat(3, clamp(130px, 14vw, 190px));
 	gap: 0.8rem;
 }
 
@@ -15,6 +19,31 @@
 	overflow: hidden;
 	cursor: pointer;
 	position: relative;
+	min-height: 0;
+}
+
+.galleryItem1 {
+	grid-area: item1;
+}
+
+.galleryItem2 {
+	grid-area: item2;
+}
+
+.galleryItem3 {
+	grid-area: item3;
+}
+
+.galleryItem4 {
+	grid-area: item4;
+}
+
+.galleryItem5 {
+	grid-area: item5;
+}
+
+.galleryItem6 {
+	grid-area: item6;
 }
 
 .galleryItem:focus-visible {
@@ -22,18 +51,11 @@
 	outline-offset: 2px;
 }
 
-.galleryItem:nth-child(1) {
-	grid-column: span 2;
-}
-
-.galleryItem:nth-child(4) {
-	grid-column: span 2;
-}
-
 .galleryMedia {
 	position: relative;
 	width: 100%;
-	min-height: 220px;
+	height: 100%;
+	min-height: 0;
 }
 
 .galleryPhoto {
@@ -46,7 +68,8 @@
 
 .galleryPhotoPlaceholder {
 	width: 100%;
-	min-height: 220px;
+	height: 100%;
+	min-height: 0;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -160,25 +183,31 @@
 	opacity: 1;
 }
 
+@media (max-width: 1024px) {
+	.galleryGrid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		grid-template-areas:
+			"item1 item1 item2"
+			"item3 item4 item4"
+			"item5 item6 item6";
+		grid-template-rows: repeat(3, clamp(125px, 21vw, 180px));
+	}
+}
+
 @media (max-width: 768px) {
 	.gallery {
 		padding: 4rem 1.5rem;
 	}
 
 	.galleryGrid {
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		grid-template-areas:
+			"item1 item1"
+			"item2 item3"
+			"item4 item4"
+			"item5 item6";
+		grid-template-rows: repeat(4, clamp(120px, 24vw, 180px));
 		gap: 0.7rem;
-	}
-
-	.galleryItem:nth-child(1),
-	.galleryItem:nth-child(4) {
-		grid-column: span 1;
-	}
-
-	.galleryPhoto,
-	.galleryMedia,
-	.galleryPhotoPlaceholder {
-		min-height: 180px;
 	}
 
 	.galleryCaption {
@@ -208,9 +237,23 @@
 
 	.galleryGrid {
 		grid-template-columns: 1fr;
+		grid-template-areas: none;
+		grid-template-rows: none;
 	}
 
-	.galleryPhoto,
+	.galleryItem {
+		min-height: 230px;
+	}
+
+	.galleryItem1,
+	.galleryItem2,
+	.galleryItem3,
+	.galleryItem4,
+	.galleryItem5,
+	.galleryItem6 {
+		grid-area: auto;
+	}
+
 	.galleryMedia,
 	.galleryPhotoPlaceholder {
 		min-height: 230px;

@@ -1,19 +1,33 @@
+import type { KeyboardEvent as ReactKeyboardEvent } from "react";
+import { memo, useCallback } from "react";
 import type { Tribute } from "@/types";
 import styles from "./Tributes.module.css";
 
 interface TributeCardProps {
 	tribute: Tribute;
-	onClick: () => void;
+	index: number;
+	onOpen: (index: number) => void;
 }
 
-export default function TributeCard({ tribute, onClick }: TributeCardProps) {
+function TributeCard({ tribute, index, onOpen }: TributeCardProps) {
+	const handleOpen = useCallback(() => {
+		onOpen(index);
+	}, [index, onOpen]);
+
+	const handleKeyDown = useCallback(
+		(e: ReactKeyboardEvent<HTMLDivElement>) => {
+			if (e.key !== "Enter" && e.key !== " ") return;
+			e.preventDefault();
+			onOpen(index);
+		},
+		[index, onOpen],
+	);
+
 	return (
 		<div
 			className={styles.tributeCard}
-			onClick={onClick}
-			onKeyDown={(e) => {
-				if (e.key === "Enter" || e.key === " ") onClick();
-			}}
+			onClick={handleOpen}
+			onKeyDown={handleKeyDown}
 			role="button"
 			tabIndex={0}
 		>
@@ -30,3 +44,5 @@ export default function TributeCard({ tribute, onClick }: TributeCardProps) {
 		</div>
 	);
 }
+
+export default memo(TributeCard);

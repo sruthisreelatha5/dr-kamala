@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import ScrollReveal from "@/components/ScrollReveal/ScrollReveal";
 import { useMobile } from "@/hooks/mobilehooks";
 import type { WallMessage } from "@/types";
@@ -13,6 +13,41 @@ function formatDate(iso: string): string {
 	return `${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 }
 
+interface MessagesWallContentProps {
+	loading: boolean;
+	messages: WallMessage[];
+}
+
+const MessagesWallContent = memo(function MessagesWallContent({
+	loading,
+	messages,
+}: MessagesWallContentProps) {
+	if (loading) {
+		return <div className={styles.emptyWall}>Loading memories...</div>;
+	}
+
+	if (messages.length === 0) {
+		return <div className={styles.emptyWall}>Be the first to leave a memory for Mini...</div>;
+	}
+
+	return messages.map((msg) => (
+		<div className={styles.messageCard} key={msg.id}>
+			<div className={styles.messageText}>&ldquo;{msg.text}&rdquo;</div>
+			<div className={styles.messageMeta}>
+				<span className={styles.messageName}>{msg.name}</span>
+				{msg.relation && (
+					<>
+						{" "}
+						&middot; <em>{msg.relation}</em>
+					</>
+				)}
+				<br />
+				<span className={styles.messageDate}>{formatDate(msg.created_at)}</span>
+			</div>
+		</div>
+	));
+});
+
 export default function RememberWall() {
 	const [messages, setMessages] = useState<WallMessage[]>([]);
 	const [loading, setLoading] = useState(true);
@@ -23,34 +58,53 @@ export default function RememberWall() {
 	const [text, setText] = useState("");
 	const [showSuccess, setShowSuccess] = useState(false);
 	const wallRef = useRef<HTMLDivElement>(null);
+	const successTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+	const scrollTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const isMobile = useMobile();
 
 	useEffect(() => {
-		let cancelled = false;
+		const controller = new AbortController();
 
 		async function load() {
 			setLoading(true);
 			setError(null);
 
 			try {
-				const res = await fetch("/api/wall-messages?limit=200", { cache: "no-store" });
+				const res = await fetch("/api/wall-messages?limit=200", {
+					cache: "no-store",
+					signal: controller.signal,
+				});
 				const json = (await res.json()) as { messages?: WallMessage[]; error?: string };
 
 				if (!res.ok) throw new Error(json.error || "Failed to load messages.");
 
-				if (!cancelled) setMessages(json.messages ?? []);
+				setMessages(json.messages ?? []);
 			} catch (err) {
+				if (controller.signal.aborted) return;
 				const message = err instanceof Error ? err.message : "Failed to load messages.";
-				if (!cancelled) setError(message);
+				setError(message);
 			} finally {
-				if (!cancelled) setLoading(false);
+				if (!controller.signal.aborted) {
+					setLoading(false);
+				}
 			}
 		}
 
 		void load();
 
 		return () => {
-			cancelled = true;
+			controller.abort();
+		};
+	}, []);
+
+	useEffect(() => {
+		return () => {
+			if (successTimerRef.current) {
+				clearTimeout(successTimerRef.current);
+			}
+			if (scrollTimerRef.current) {
+				clearTimeout(scrollTimerRef.current);
+			}
 		};
 	}, []);
 
@@ -87,8 +141,15 @@ export default function RememberWall() {
 			setText("");
 			setShowSuccess(true);
 
-			setTimeout(() => setShowSuccess(false), 4000);
-			setTimeout(() => {
+			if (successTimerRef.current) {
+				clearTimeout(successTimerRef.current);
+			}
+			successTimerRef.current = setTimeout(() => setShowSuccess(false), 4000);
+
+			if (scrollTimerRef.current) {
+				clearTimeout(scrollTimerRef.current);
+			}
+			scrollTimerRef.current = setTimeout(() => {
 				wallRef.current?.scrollIntoView({
 					behavior: "smooth",
 					block: isMobile ? "nearest" : "start",
@@ -182,28 +243,7 @@ export default function RememberWall() {
 			)}
 
 			<div className={styles.messagesWall} ref={wallRef}>
-				{loading ? (
-					<div className={styles.emptyWall}>Loading memories...</div>
-				) : messages.length === 0 ? (
-					<div className={styles.emptyWall}>Be the first to leave a memory for Mini...</div>
-				) : (
-					messages.map((msg) => (
-						<div className={styles.messageCard} key={msg.id}>
-							<div className={styles.messageText}>&ldquo;{msg.text}&rdquo;</div>
-							<div className={styles.messageMeta}>
-								<span className={styles.messageName}>{msg.name}</span>
-								{msg.relation && (
-									<>
-										{" "}
-										&middot; <em>{msg.relation}</em>
-									</>
-								)}
-								<br />
-								<span className={styles.messageDate}>{formatDate(msg.created_at)}</span>
-							</div>
-						</div>
-					))
-				)}
+				<MessagesWallContent loading={loading} messages={messages} />
 			</div>
 		</section>
 	);

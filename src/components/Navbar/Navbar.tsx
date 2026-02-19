@@ -10,13 +10,30 @@ export default function Navbar() {
 	const isMobile = useMobile();
 
 	useEffect(() => {
-		const handleScroll = () => {
-			setScrolled(window.scrollY > (isMobile ? 16 : 50));
+		const scrollThreshold = isMobile ? 16 : 50;
+		let rafId = 0;
+
+		const updateScrolledState = () => {
+			const nextScrolled = window.scrollY > scrollThreshold;
+			setScrolled((prev) => (prev === nextScrolled ? prev : nextScrolled));
 		};
 
-		handleScroll();
-		window.addEventListener("scroll", handleScroll);
-		return () => window.removeEventListener("scroll", handleScroll);
+		const handleScroll = () => {
+			if (rafId) return;
+			rafId = window.requestAnimationFrame(() => {
+				rafId = 0;
+				updateScrolledState();
+			});
+		};
+
+		updateScrolledState();
+		window.addEventListener("scroll", handleScroll, { passive: true });
+		return () => {
+			if (rafId) {
+				window.cancelAnimationFrame(rafId);
+			}
+			window.removeEventListener("scroll", handleScroll);
+		};
 	}, [isMobile]);
 
 	useEffect(() => {
