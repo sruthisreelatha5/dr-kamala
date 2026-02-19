@@ -11,6 +11,10 @@
 	align-items: start;
 }
 
+.aboutText {
+	max-width: 68ch;
+}
+
 .photoImage {
 	aspect-ratio: 3 / 4;
 	border-radius: 2px;
@@ -27,17 +31,32 @@
 }
 
 @media (max-width: 768px) {
-	.aboutGrid {
-		grid-template-columns: 1fr;
-		gap: 2.5rem;
-	}
-
-	.photoPlaceholder {
-		aspect-ratio: 4 / 3;
-		max-height: 260px;
-	}
-
 	.about {
 		padding: 2rem 1.5rem 4rem;
+	}
+
+	.aboutGrid {
+		grid-template-columns: 1fr;
+		gap: 2.2rem;
+	}
+
+	.photoImage {
+		max-width: 260px;
+		margin: 0 auto;
+	}
+
+	.aboutText p {
+		font-size: 1rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.about {
+		padding: 2rem 1rem 3.5rem;
+	}
+
+	.aboutText p {
+		font-size: 0.97rem;
+		margin-bottom: 1.2rem;
 	}
 }

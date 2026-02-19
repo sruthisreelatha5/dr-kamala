@@ -1,6 +1,7 @@
 .nav {
 	position: fixed;
 	top: 0;
+	left: 0;
 	width: 100%;
 	z-index: 999;
 	padding: 1.2rem 3rem;
@@ -49,6 +50,12 @@
 	background: none;
 	border: none;
 	cursor: pointer;
+	width: 44px;
+	height: 44px;
+	align-items: center;
+	justify-content: center;
+	padding: 0.4rem;
+	border-radius: 2px;
 }
 
 .navToggle span {
@@ -56,13 +63,23 @@
 	width: 22px;
 	height: 1.5px;
 	background: var(--sepia);
-	margin: 5px 0;
+	margin: 4px 0;
 	transition: all 0.3s;
+}
+
+.navToggle:focus-visible,
+.navLinks a:focus-visible {
+	outline: 2px solid var(--sepia-light);
+	outline-offset: 2px;
 }
 
 @media (max-width: 768px) {
 	.nav {
 		padding: 1rem 1.5rem;
+	}
+
+	.navName {
+		font-size: 1.1rem;
 	}
 
 	.navLinks {
@@ -73,8 +90,16 @@
 		left: 0;
 		right: 0;
 		background: var(--cream);
-		padding: 1rem 2rem 2rem;
+		padding: 0.7rem 1.5rem 1.2rem;
 		border-bottom: 1px solid var(--border);
+		gap: 0.2rem;
+	}
+
+	.navLinks a {
+		display: block;
+		padding: 0.7rem 0.1rem;
+		font-size: 0.8rem;
+		letter-spacing: 0.1em;
 	}
 
 	.navLinksOpen {
@@ -82,6 +107,16 @@
 	}
 
 	.navToggle {
-		display: block;
+		display: flex;
+	}
+}
+
+@media (max-width: 480px) {
+	.nav {
+		padding: 0.9rem 1rem;
+	}
+
+	.navName {
+		font-size: 1rem;
 	}
 }

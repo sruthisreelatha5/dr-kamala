@@ -1,19 +1,29 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useMobile } from "@/hooks/mobilehooks";
 import styles from "./Navbar.module.css";
 
 export default function Navbar() {
 	const [scrolled, setScrolled] = useState(false);
 	const [menuOpen, setMenuOpen] = useState(false);
+	const isMobile = useMobile();
 
 	useEffect(() => {
 		const handleScroll = () => {
-			setScrolled(window.scrollY > 50);
+			setScrolled(window.scrollY > (isMobile ? 16 : 50));
 		};
+
+		handleScroll();
 		window.addEventListener("scroll", handleScroll);
 		return () => window.removeEventListener("scroll", handleScroll);
-	}, []);
+	}, [isMobile]);
+
+	useEffect(() => {
+		if (!isMobile && menuOpen) {
+			setMenuOpen(false);
+		}
+	}, [isMobile, menuOpen]);
 
 	const closeMenu = useCallback(() => setMenuOpen(false), []);
 
@@ -24,12 +34,18 @@ export default function Navbar() {
 				className={styles.navToggle}
 				onClick={() => setMenuOpen((prev) => !prev)}
 				aria-label="Menu"
+				aria-expanded={menuOpen}
+				aria-controls="primary-navigation"
+				type="button"
 			>
 				<span />
 				<span />
 				<span />
 			</button>
-			<ul className={`${styles.navLinks} ${menuOpen ? styles.navLinksOpen : ""}`}>
+			<ul
+				className={`${styles.navLinks} ${menuOpen ? styles.navLinksOpen : ""}`}
+				id="primary-navigation"
+			>
 				<li>
 					<a href="#about" onClick={closeMenu}>
 						About

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import ScrollReveal from "@/components/ScrollReveal/ScrollReveal";
 import { tributes } from "@/data/tributes";
+import { useMobile } from "@/hooks/mobilehooks";
 import type { Tribute } from "@/types";
 import TributeCard from "./TributeCard";
 import TributeModal from "./TributeModal";
@@ -10,6 +11,7 @@ import styles from "./Tributes.module.css";
 
 export default function Tributes() {
 	const [selectedTribute, setSelectedTribute] = useState<Tribute | null>(null);
+	const isMobile = useMobile();
 
 	const openTribute = useCallback((tribute: Tribute) => {
 		setSelectedTribute(tribute);
@@ -29,6 +31,12 @@ export default function Tributes() {
 		return () => document.removeEventListener("keydown", handleKeyDown);
 	}, [closeTribute]);
 
+	useEffect(() => {
+		return () => {
+			document.body.style.overflow = "";
+		};
+	}, []);
+
 	return (
 		<div id="tributes" className={styles.tributes}>
 			<div className={styles.inner}>
@@ -46,7 +54,7 @@ export default function Tributes() {
 					))}
 				</div>
 			</div>
-			<TributeModal tribute={selectedTribute} onClose={closeTribute} />
+			<TributeModal tribute={selectedTribute} onClose={closeTribute} isMobile={isMobile} />
 		</div>
 	);
 }

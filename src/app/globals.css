@@ -22,6 +22,7 @@
 
 html {
 	scroll-behavior: smooth;
+	-webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -70,7 +71,10 @@ body::before {
 
 /* ── BUTTONS ── */
 .btn {
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 44px;
 	padding: 0.8rem 2rem;
 	font-size: 0.75rem;
 	letter-spacing: 0.18em;
@@ -78,6 +82,7 @@ body::before {
 	text-decoration: none;
 	border-radius: 1px;
 	transition: all 0.3s;
+	text-align: center;
 }
 
 .btn-light {
@@ -150,4 +155,24 @@ body::before {
 	font-size: 0.9rem;
 	margin-top: 1rem;
 	text-align: center;
+}
+
+@media (max-width: 768px) {
+	.section-title {
+		margin-bottom: 2rem;
+	}
+
+	.section-label {
+		font-size: 0.68rem;
+		letter-spacing: 0.2em;
+	}
+}
+
+@media (max-width: 480px) {
+	.btn {
+		width: 100%;
+		padding-inline: 1rem;
+		font-size: 0.7rem;
+		letter-spacing: 0.14em;
+	}
 }

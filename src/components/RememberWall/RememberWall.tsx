@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import ScrollReveal from "@/components/ScrollReveal/ScrollReveal";
+import { useMobile } from "@/hooks/mobilehooks";
 import type { WallMessage } from "@/types";
 import styles from "./RememberWall.module.css";
 
@@ -22,6 +23,7 @@ export default function RememberWall() {
 	const [text, setText] = useState("");
 	const [showSuccess, setShowSuccess] = useState(false);
 	const wallRef = useRef<HTMLDivElement>(null);
+	const isMobile = useMobile();
 
 	useEffect(() => {
 		let cancelled = false;
@@ -56,7 +58,7 @@ export default function RememberWall() {
 		if (submitLoading) return;
 
 		if (!name.trim() || !text.trim()) {
-			alert("Please enter your name and a message.");
+			setError("Please enter your name and a message.");
 			return;
 		}
 
@@ -87,7 +89,10 @@ export default function RememberWall() {
 
 			setTimeout(() => setShowSuccess(false), 4000);
 			setTimeout(() => {
-				wallRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+				wallRef.current?.scrollIntoView({
+					behavior: "smooth",
+					block: isMobile ? "nearest" : "start",
+				});
 			}, 300);
 		} catch (err) {
 			const message = err instanceof Error ? err.message : "Failed to submit message.";
@@ -95,7 +100,7 @@ export default function RememberWall() {
 		} finally {
 			setSubmitLoading(false);
 		}
-	}, [name, relation, text, submitLoading]);
+	}, [name, relation, text, submitLoading, isMobile]);
 
 	return (
 		<section id="remember" className={styles.remember}>
@@ -105,7 +110,8 @@ export default function RememberWall() {
 					Leave a <em>Memory</em>
 				</h2>
 				<p className={styles.rememberIntro}>
-					If you knew Kamala, were touched by her words, or simply want to leave a note, this space is for you.
+					If you knew Kamala, were touched by her words, or simply want to leave a note, this space
+					is for you.
 				</p>
 			</ScrollReveal>
 
@@ -151,7 +157,12 @@ export default function RememberWall() {
 						/>
 						<div className={styles.charCount}>{text.length} / 500</div>
 					</div>
-					<button className={styles.submitBtn} onClick={handleSubmit} type="button">
+					<button
+						className={styles.submitBtn}
+						onClick={handleSubmit}
+						type="button"
+						disabled={submitLoading}
+					>
 						{submitLoading ? "Submitting..." : "Leave Your Note"}
 					</button>
 					{error && <div className={styles.errorMsg}>{error}</div>}

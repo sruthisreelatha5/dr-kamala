@@ -25,31 +25,24 @@ export default function Book() {
 					</h2>
 					<p className={styles.bookDescription}>
 						A collection of poems gathered from a lifetime of writing, now offered to the world as
-						Kamala always gave: generously, wholeheartedly, and with the hope of bringing
-						light into someone&apos;s day.
+						Kamala always gave: generously, wholeheartedly, and with the hope of bringing light into
+						someone&apos;s day.
 					</p>
 					<p className={styles.bookDescription}>
 						This book is a gift to all who knew her, and a beautiful introduction for all who did
 						not.
 					</p>
-					<div style={{ marginTop: '2rem' }}>
-  <a 
-    href="https://wa.me/919895686526?text=Hi%2C%20I%27d%20like%20to%20pre-book%20The%20Hall%20of%20Silence.%20My%20address%20is%3A%20" 
-    target="_blank" 
-    rel="noopener noreferrer"
-    className="btn btn-light"
-  >
-    Pre-book via WhatsApp →
-  </a>
-  <p style={{ 
-    marginTop: '1rem', 
-    fontSize: '0.9rem', 
-    color: 'var(--rose-light)', 
-    fontStyle: 'italic' 
-  }}>
-    Payment via GPay to 9895686526
-  </p>
-</div>
+					<div className={styles.ctaBlock}>
+						<a
+							href="https://wa.me/919895686526?text=Hi%2C%20I%27d%20like%20to%20pre-book%20The%20Hall%20of%20Silence.%20My%20address%20is%3A%20"
+							target="_blank"
+							rel="noopener noreferrer"
+							className={`btn btn-light ${styles.prebookBtn}`}
+						>
+							Pre-book via WhatsApp →
+						</a>
+						<p className={styles.paymentNote}>Payment via GPay to 9895686526</p>
+					</div>
 				</ScrollReveal>
 			</div>
 		</div>

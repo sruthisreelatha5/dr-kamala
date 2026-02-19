@@ -8,6 +8,7 @@
 	max-width: 600px;
 	color: var(--sepia);
 	margin-bottom: 3rem;
+	font-size: 1.02rem;
 }
 
 .rememberForm {
@@ -41,6 +42,7 @@
 .formGroup textarea,
 .formGroup select {
 	width: 100%;
+	min-height: 44px;
 	padding: 0.7rem 0.9rem;
 	border: 1px solid var(--border);
 	background: var(--warm-white);
@@ -76,6 +78,7 @@
 	background: var(--sepia);
 	color: var(--cream);
 	border: none;
+	min-height: 44px;
 	padding: 0.8rem 2.5rem;
 	font-family: var(--font-sans), "Lato", sans-serif;
 	font-size: 0.75rem;
@@ -87,6 +90,11 @@
 
 .submitBtn:hover {
 	background: var(--ink);
+}
+
+.submitBtn:disabled {
+	opacity: 0.65;
+	cursor: not-allowed;
 }
 
 .wallHeading {
@@ -184,11 +192,53 @@
 }
 
 @media (max-width: 768px) {
+	.remember {
+		padding: 4rem 1.5rem;
+	}
+
+	.rememberForm {
+		padding: 1.5rem;
+		margin-bottom: 3rem;
+	}
+
 	.formRow {
 		grid-template-columns: 1fr;
 	}
 
+	.submitBtn {
+		width: 100%;
+	}
+
+	.messagesWall {
+		gap: 1rem;
+	}
+
+	.wallHeading {
+		font-size: 1.2rem;
+		margin-bottom: 1rem;
+	}
+
+	.emptyWall {
+		padding: 2rem 1rem;
+		font-size: 1rem;
+	}
+}
+
+@media (max-width: 480px) {
 	.remember {
-		padding: 4rem 1.5rem;
+		padding: 3.8rem 1rem;
+	}
+
+	.rememberForm {
+		padding: 1.2rem;
+	}
+
+	.messageCard {
+		padding: 1.2rem;
+	}
+
+	.messageText {
+		font-size: 0.97rem;
+		line-height: 1.65;
 	}
 }

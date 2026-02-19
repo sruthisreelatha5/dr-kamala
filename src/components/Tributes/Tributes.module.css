@@ -28,12 +28,18 @@
 		border-color 0.3s;
 	display: flex;
 	flex-direction: column;
+	min-height: 100%;
 }
 
 .tributeCard:hover {
 	transform: translateY(-3px);
 	box-shadow: 0 12px 30px rgba(44, 36, 22, 0.09);
 	border-color: var(--rose-light);
+}
+
+.tributeCard:focus-visible {
+	outline: 2px solid var(--sepia-light);
+	outline-offset: 2px;
 }
 
 .tributeCard::before {
@@ -131,6 +137,10 @@
 	animation: fadeUp 0.3s ease;
 }
 
+.modalMobile {
+	max-width: 600px;
+}
+
 .modal::before {
 	content: "\201C";
 	font-family: var(--font-serif), "Cormorant Garamond", serif;
@@ -179,8 +189,84 @@
 	cursor: pointer;
 	line-height: 1;
 	transition: color 0.2s;
+	width: 44px;
+	height: 44px;
+	display: grid;
+	place-items: center;
 }
 
 .modalClose:hover {
 	color: var(--ink);
+}
+
+@media (max-width: 768px) {
+	.tributes {
+		padding: 4.5rem 1.5rem;
+	}
+
+	.tributesGrid {
+		grid-template-columns: 1fr;
+		gap: 1rem;
+		margin-top: 2rem;
+	}
+
+	.tributeCard {
+		padding: 1.5rem 1.3rem 1.2rem;
+	}
+
+	.tributeText {
+		font-size: 1rem;
+		line-height: 1.65;
+		-webkit-line-clamp: 5;
+	}
+
+	.tributeFooter {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.4rem;
+	}
+
+	.modalOverlay {
+		padding: 1rem;
+	}
+
+	.modalMobile {
+		max-width: none;
+	}
+
+	.modal {
+		padding: 2.4rem 1.25rem 1.6rem;
+		max-height: calc(100vh - 2rem);
+	}
+
+	.modal::before {
+		font-size: 3.2rem;
+		top: -0.3rem;
+		left: 0.9rem;
+	}
+
+	.modalText {
+		font-size: 1rem;
+		line-height: 1.7;
+		margin-bottom: 1.4rem;
+	}
+
+	.modalClose {
+		top: 0.35rem;
+		right: 0.4rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.tributes {
+		padding: 4rem 1rem;
+	}
+
+	.modal {
+		padding: 2.2rem 1rem 1.2rem;
+	}
+
+	.modalText {
+		font-size: 0.95rem;
+	}
 }

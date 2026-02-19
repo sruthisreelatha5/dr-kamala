@@ -17,12 +17,31 @@
 	position: relative;
 }
 
+.galleryItem:focus-visible {
+	outline: 2px solid var(--sepia-light);
+	outline-offset: 2px;
+}
+
 .galleryItem:nth-child(1) {
 	grid-column: span 2;
 }
 
 .galleryItem:nth-child(4) {
 	grid-column: span 2;
+}
+
+.galleryMedia {
+	position: relative;
+	width: 100%;
+	min-height: 220px;
+}
+
+.galleryPhoto {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.5s ease;
 }
 
 .galleryPhotoPlaceholder {
@@ -40,6 +59,7 @@
 	transition: transform 0.5s ease;
 }
 
+.galleryItem:hover .galleryPhoto,
 .galleryItem:hover .galleryPhotoPlaceholder {
 	transform: scale(1.04);
 }
@@ -78,10 +98,25 @@
 	display: flex;
 }
 
+.lightboxMobile {
+	padding: 1rem;
+}
+
 .lightboxContent {
 	max-width: 800px;
 	width: 100%;
 	text-align: center;
+}
+
+.lightboxContentMobile {
+	max-width: 100%;
+}
+
+.lightboxImg {
+	display: block;
+	width: 100%;
+	max-height: 72vh;
+	object-fit: contain;
 }
 
 .lightboxImgPlaceholder {
@@ -115,6 +150,10 @@
 	line-height: 1;
 	opacity: 0.7;
 	transition: opacity 0.2s;
+	width: 44px;
+	height: 44px;
+	display: grid;
+	place-items: center;
 }
 
 .lightboxClose:hover {
@@ -122,8 +161,13 @@
 }
 
 @media (max-width: 768px) {
+	.gallery {
+		padding: 4rem 1.5rem;
+	}
+
 	.galleryGrid {
 		grid-template-columns: 1fr 1fr;
+		gap: 0.7rem;
 	}
 
 	.galleryItem:nth-child(1),
@@ -131,7 +175,52 @@
 		grid-column: span 1;
 	}
 
+	.galleryPhoto,
+	.galleryMedia,
+	.galleryPhotoPlaceholder {
+		min-height: 180px;
+	}
+
+	.galleryCaption {
+		opacity: 1;
+		font-size: 0.72rem;
+		padding: 0.7rem 0.8rem;
+	}
+
+	.lightbox {
+		padding: 1rem;
+	}
+
+	.lightboxImg {
+		max-height: 64vh;
+	}
+
+	.lightboxClose {
+		top: 0.25rem;
+		right: 0.25rem;
+	}
+}
+
+@media (max-width: 480px) {
 	.gallery {
-		padding: 4rem 1.5rem;
+		padding: 4rem 1rem;
+	}
+
+	.galleryGrid {
+		grid-template-columns: 1fr;
+	}
+
+	.galleryPhoto,
+	.galleryMedia,
+	.galleryPhotoPlaceholder {
+		min-height: 230px;
+	}
+
+	.lightbox {
+		padding: 0.75rem;
+	}
+
+	.lightboxImg {
+		max-height: 58vh;
 	}
 }

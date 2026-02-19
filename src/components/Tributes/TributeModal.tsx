@@ -4,9 +4,10 @@ import styles from "./Tributes.module.css";
 interface TributeModalProps {
 	tribute: Tribute | null;
 	onClose: () => void;
+	isMobile: boolean;
 }
 
-export default function TributeModal({ tribute, onClose }: TributeModalProps) {
+export default function TributeModal({ tribute, onClose, isMobile }: TributeModalProps) {
 	if (!tribute) return null;
 
 	const handleOverlayClick = (e: React.MouseEvent) => {
@@ -20,8 +21,8 @@ export default function TributeModal({ tribute, onClose }: TributeModalProps) {
 			className={`${styles.modalOverlay} ${tribute ? styles.modalOverlayActive : ""}`}
 			onClick={handleOverlayClick}
 		>
-			<div className={styles.modal}>
-				<button className={styles.modalClose} onClick={onClose} type="button">
+			<div className={`${styles.modal} ${isMobile ? styles.modalMobile : ""}`}>
+				<button className={styles.modalClose} onClick={onClose} type="button" aria-label="Close">
 					&#x2715;
 				</button>
 				<p className={styles.modalText}>{tribute.text}</p>

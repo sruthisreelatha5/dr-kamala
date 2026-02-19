@@ -47,6 +47,7 @@
 	animation: fadeUp 1.2s 0.35s ease both;
 	position: relative;
 	z-index: 1;
+	max-width: 900px;
 }
 
 .heroDivider {
@@ -69,4 +70,42 @@
 	animation: fadeUp 1.2s 0.65s ease both;
 	position: relative;
 	z-index: 1;
+}
+
+@media (max-width: 768px) {
+	.hero {
+		padding: 6.6rem 1.4rem 2.4rem;
+	}
+
+	.heroName {
+		font-size: clamp(2.7rem, 16vw, 4.9rem);
+	}
+
+	.heroYears {
+		font-size: 0.83rem;
+		letter-spacing: 0.1em;
+		line-height: 1.6;
+		max-width: 360px;
+	}
+
+	.heroDivider {
+		margin: 1.5rem auto;
+	}
+
+	.heroTagline {
+		font-size: 1rem;
+		max-width: 330px;
+	}
+}
+
+@media (max-width: 480px) {
+	.hero {
+		padding: 6.2rem 1rem 2.2rem;
+	}
+
+	.heroYears {
+		font-size: 0.76rem;
+		letter-spacing: 0.08em;
+		max-width: 300px;
+	}
 }

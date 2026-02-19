@@ -38,9 +38,29 @@
 	color: rgba(250, 246, 240, 0.7);
 	font-size: 1rem;
 	margin-bottom: 1.5rem;
+	max-width: 58ch;
+}
+
+.ctaBlock {
+	margin-top: 2rem;
+}
+
+.paymentNote {
+	margin-top: 1rem;
+	font-size: 0.9rem;
+	color: var(--rose-light);
+	font-style: italic;
+}
+
+.prebookBtn {
+	min-height: 44px;
 }
 
 @media (max-width: 768px) {
+	.book {
+		padding: 4.5rem 1.5rem;
+	}
+
 	.inner {
 		grid-template-columns: 1fr;
 		gap: 3rem;
@@ -49,5 +69,21 @@
 	.bookCover {
 		max-width: 220px;
 		margin: 0 auto;
+	}
+
+	.bookDescription {
+		font-size: 0.98rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.book {
+		padding: 4rem 1rem;
+	}
+
+	.prebookBtn {
+		width: 100%;
+		text-align: center;
+		padding-inline: 1rem;
 	}
 }
