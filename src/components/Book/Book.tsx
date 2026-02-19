@@ -25,7 +25,7 @@ export default function Book() {
 					</h2>
 					<p className={styles.bookDescription}>
 						A collection of poems gathered from a lifetime of writing, now offered to the world as
-						Dr. R. Kamala always gave: generously, wholeheartedly, and with the hope of bringing
+						Kamala always gave: generously, wholeheartedly, and with the hope of bringing
 						light into someone&apos;s day.
 					</p>
 					<p className={styles.bookDescription}>
