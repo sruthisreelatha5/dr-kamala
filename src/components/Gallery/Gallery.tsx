@@ -57,11 +57,13 @@ export default function Gallery() {
 							role="button"
 							tabIndex={0}
 						>
-							<div className={styles.galleryPhotoPlaceholder} style={{ background: item.gradient }}>
-								[ Photo {index + 1} ]
-								<br />
-								<small>Add your photo here</small>
-							</div>
+							{item.image ? (
+  <img src={item.image} alt={item.caption} className={styles.galleryPhoto} />
+) : (
+  <div className={styles.galleryPhotoPlaceholder} style={{ background: item.gradient }}>
+    [ Photo {index + 1} ]
+  </div>
+)}
 							<div className={styles.galleryCaption}>{item.caption}</div>
 						</div>
 					))}
@@ -77,16 +79,13 @@ export default function Gallery() {
 					&#x2715;
 				</button>
 				<div className={styles.lightboxContent}>
-					<div
-						className={styles.lightboxImgPlaceholder}
-						style={{
-							background:
-								lightboxItem?.gradient ||
-								"linear-gradient(135deg, var(--rose-light) 0%, var(--sepia-light) 100%)",
-						}}
-					>
-						[ Photo {lightboxIndex + 1} — Replace with real image ]
-					</div>
+				{lightboxItem?.image ? (
+  <img src={lightboxItem.image} alt={lightboxItem.caption} className={styles.lightboxImg} />
+) : (
+  <div className={styles.lightboxImgPlaceholder}>
+    [ Photo {lightboxIndex + 1} ]
+  </div>
+)}
 					<div className={styles.lightboxCaption}>{lightboxItem?.caption}</div>
 				</div>
 			</div>
