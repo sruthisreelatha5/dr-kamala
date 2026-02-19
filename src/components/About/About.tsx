@@ -1,5 +1,5 @@
-import ScrollReveal from "@/components/ScrollReveal/ScrollReveal";
 import Image from "next/image";
+import ScrollReveal from "@/components/ScrollReveal/ScrollReveal";
 import styles from "./About.module.css";
 
 export default function About() {
@@ -14,7 +14,7 @@ export default function About() {
 			<ScrollReveal className={styles.aboutGrid}>
 				<div>
 					<Image
-						src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/kamala%20photo-mFY4keDtO5sIil0tqhxIWkpo8ErPQf.png"
+						src="/ProfilePic.png"
 						alt="Dr. R. Kamala portrait"
 						width={200}
 						height={267}

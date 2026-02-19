@@ -1,5 +1,5 @@
-import ScrollReveal from "@/components/ScrollReveal/ScrollReveal";
 import Image from "next/image";
+import ScrollReveal from "@/components/ScrollReveal/ScrollReveal";
 import styles from "./Book.module.css";
 
 export default function Book() {
@@ -8,7 +8,7 @@ export default function Book() {
 			<div className={styles.inner}>
 				<ScrollReveal>
 					<Image
-						src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/book%20cover%20png-17wzlHMub9n2mM4hidsHtcl1JqurQq.png"
+						src="/bookCover.png"
 						alt="The Hall of Silence book cover"
 						width={300}
 						height={450}
@@ -25,7 +25,8 @@ export default function Book() {
 					</h2>
 					<p className={styles.bookDescription}>
 						A collection of poems gathered from a lifetime of writing, now offered to the world as
-						Dr. R. Kamala always gave: generously, wholeheartedly, and with the hope of bringing light into someone&apos;s day.
+						Dr. R. Kamala always gave: generously, wholeheartedly, and with the hope of bringing
+						light into someone&apos;s day.
 					</p>
 					<p className={styles.bookDescription}>
 						This book is a gift to all who knew her, and a beautiful introduction for all who did
