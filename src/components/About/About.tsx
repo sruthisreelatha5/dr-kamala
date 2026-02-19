@@ -1,4 +1,5 @@
 import ScrollReveal from "@/components/ScrollReveal/ScrollReveal";
+import Image from "next/image";
 import styles from "./About.module.css";
 
 export default function About() {
@@ -12,12 +13,14 @@ export default function About() {
 			</ScrollReveal>
 			<ScrollReveal className={styles.aboutGrid}>
 				<div>
-					<div className={styles.photoPlaceholder}>
-						[ Photo of Kamala ]
-						<br />
-						<br />
-						<small>Replace with her photo</small>
-					</div>
+					<Image
+						src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/kamala%20photo-mFY4keDtO5sIil0tqhxIWkpo8ErPQf.png"
+						alt="Dr. R. Kamala portrait"
+						width={300}
+						height={400}
+						priority
+						className={styles.photoImage}
+					/>
 				</div>
 				<div className={styles.aboutText}>
 					<p>
