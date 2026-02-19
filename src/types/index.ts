@@ -4,12 +4,11 @@ export interface Tribute {
 	title: string;
 	text: string;
 }
-
 export interface GalleryItem {
 	caption: string;
 	gradient: string;
+	image?: string;
 }
-
 export interface WallMessage {
 	id: string;
 	name: string;
