@@ -59,19 +59,6 @@
 	z-index: 1;
 }
 
-.heroPhotoContainer {
-	position: relative;
-	z-index: 2;
-	margin-bottom: 2rem;
-	animation: fadeUp 1.2s 0.15s ease both;
-}
-
-.heroPhoto {
-	border-radius: 8px;
-	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-	object-fit: cover;
-}
-
 .heroTagline {
 	font-family: var(--font-serif), "Cormorant Garamond", serif;
 	font-size: clamp(1.1rem, 3vw, 1.5rem);

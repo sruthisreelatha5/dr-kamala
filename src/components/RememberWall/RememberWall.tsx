@@ -12,7 +12,8 @@ async function loadMessages(): Promise<WallMessage[]> {
 	try {
 		const { data, error } = await supabase
 			.from("memories")
-			.select("*");
+			.select("*")
+			.order("created_at", { ascending: false });
 
 		if (error) {
 			console.error("Error loading messages:", error);
@@ -23,7 +24,7 @@ async function loadMessages(): Promise<WallMessage[]> {
 			name: msg.name,
 			relation: msg.relation,
 			text: msg.message,
-			date: msg.created_at || new Date().toISOString(),
+			date: msg.created_at,
 		}));
 	} catch (err) {
 		console.error("Error loading messages:", err);
@@ -60,6 +61,7 @@ export default function RememberWall() {
 					name: name.trim(),
 					relation,
 					message: text.trim(),
+					created_at: new Date().toISOString(),
 				},
 			]);
 
