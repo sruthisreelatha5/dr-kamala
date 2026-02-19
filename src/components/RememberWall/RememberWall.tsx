@@ -105,8 +105,7 @@ export default function RememberWall() {
 					Leave a <em>Memory</em>
 				</h2>
 				<p className={styles.rememberIntro}>
-					If you knew Kamala, were touched by her words, or simply want to leave a note for her
-					family — this space is for you.
+					If you knew Kamala, were touched by her words, or simply want to leave a note, this space is for you.
 				</p>
 			</ScrollReveal>
 
