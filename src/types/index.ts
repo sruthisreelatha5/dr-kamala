@@ -11,8 +11,9 @@ export interface GalleryItem {
 }
 
 export interface WallMessage {
+	id: string;
 	name: string;
-	relation: string;
+	relation: string | null;
 	text: string;
-	date: string;
+	created_at: string;
 }

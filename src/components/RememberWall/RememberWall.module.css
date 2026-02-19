@@ -173,6 +173,16 @@
 	display: block;
 }
 
+.errorMsg {
+	padding: 1rem 1.5rem;
+	background: rgba(196, 130, 106, 0.12);
+	border: 1px solid var(--rose);
+	color: var(--sepia);
+	font-size: 0.9rem;
+	margin-top: 1rem;
+	text-align: center;
+}
+
 @media (max-width: 768px) {
 	.formRow {
 		grid-template-columns: 1fr;

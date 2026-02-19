@@ -5,24 +5,7 @@ import ScrollReveal from "@/components/ScrollReveal/ScrollReveal";
 import type { WallMessage } from "@/types";
 import styles from "./RememberWall.module.css";
 
-const STORAGE_KEY = "kamala_memories_v1";
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-function loadMessages(): WallMessage[] {
-	try {
-		return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-	} catch {
-		return [];
-	}
-}
-
-function saveMessages(msgs: WallMessage[]) {
-	try {
-		localStorage.setItem(STORAGE_KEY, JSON.stringify(msgs));
-	} catch {
-		// localStorage unavailable
-	}
-}
 
 function formatDate(iso: string): string {
 	const d = new Date(iso);
@@ -31,6 +14,9 @@ function formatDate(iso: string): string {
 
 export default function RememberWall() {
 	const [messages, setMessages] = useState<WallMessage[]>([]);
+	const [loading, setLoading] = useState(true);
+	const [submitLoading, setSubmitLoading] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 	const [name, setName] = useState("");
 	const [relation, setRelation] = useState("");
 	const [text, setText] = useState("");
@@ -38,35 +24,78 @@ export default function RememberWall() {
 	const wallRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		setMessages(loadMessages());
+		let cancelled = false;
+
+		async function load() {
+			setLoading(true);
+			setError(null);
+
+			try {
+				const res = await fetch("/api/wall-messages?limit=200", { cache: "no-store" });
+				const json = (await res.json()) as { messages?: WallMessage[]; error?: string };
+
+				if (!res.ok) throw new Error(json.error || "Failed to load messages.");
+
+				if (!cancelled) setMessages(json.messages ?? []);
+			} catch (err) {
+				const message = err instanceof Error ? err.message : "Failed to load messages.";
+				if (!cancelled) setError(message);
+			} finally {
+				if (!cancelled) setLoading(false);
+			}
+		}
+
+		void load();
+
+		return () => {
+			cancelled = true;
+		};
 	}, []);
 
-	const handleSubmit = useCallback(() => {
+	const handleSubmit = useCallback(async () => {
+		if (submitLoading) return;
+
 		if (!name.trim() || !text.trim()) {
 			alert("Please enter your name and a message.");
 			return;
 		}
 
-		const newMessage: WallMessage = {
-			name: name.trim(),
-			relation,
-			text: text.trim(),
-			date: new Date().toISOString(),
-		};
+		setSubmitLoading(true);
+		setError(null);
 
-		const updated = [newMessage, ...messages];
-		saveMessages(updated);
-		setMessages(updated);
-		setName("");
-		setRelation("");
-		setText("");
-		setShowSuccess(true);
+		try {
+			const res = await fetch("/api/wall-messages", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					name: name.trim(),
+					relation,
+					text: text.trim(),
+				}),
+			});
 
-		setTimeout(() => setShowSuccess(false), 4000);
-		setTimeout(() => {
-			wallRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-		}, 300);
-	}, [name, relation, text, messages]);
+			const json = (await res.json()) as { message?: WallMessage; error?: string };
+
+			if (!res.ok) throw new Error(json.error || "Failed to submit message.");
+			if (!json.message) throw new Error("Missing message in response.");
+
+			setMessages((prev) => [json.message as WallMessage, ...prev]);
+			setName("");
+			setRelation("");
+			setText("");
+			setShowSuccess(true);
+
+			setTimeout(() => setShowSuccess(false), 4000);
+			setTimeout(() => {
+				wallRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+			}, 300);
+		} catch (err) {
+			const message = err instanceof Error ? err.message : "Failed to submit message.";
+			setError(message);
+		} finally {
+			setSubmitLoading(false);
+		}
+	}, [name, relation, text, submitLoading]);
 
 	return (
 		<section id="remember" className={styles.remember}>
@@ -124,15 +153,16 @@ export default function RememberWall() {
 						<div className={styles.charCount}>{text.length} / 500</div>
 					</div>
 					<button className={styles.submitBtn} onClick={handleSubmit} type="button">
-						Leave Your Note
+						{submitLoading ? "Submitting..." : "Leave Your Note"}
 					</button>
+					{error && <div className={styles.errorMsg}>{error}</div>}
 					<div className={`${styles.successMsg} ${showSuccess ? styles.successMsgVisible : ""}`}>
 						&#x2726; Thank you. Your memory has been added to the wall below.
 					</div>
 				</div>
 			</ScrollReveal>
 
-			{messages.length > 0 && (
+			{!loading && messages.length > 0 && (
 				<div>
 					<p className={styles.wallHeading}>Memories left by those who loved her</p>
 					<p className={styles.wallCount}>
@@ -142,11 +172,13 @@ export default function RememberWall() {
 			)}
 
 			<div className={styles.messagesWall} ref={wallRef}>
-				{messages.length === 0 ? (
+				{loading ? (
+					<div className={styles.emptyWall}>Loading memories...</div>
+				) : messages.length === 0 ? (
 					<div className={styles.emptyWall}>Be the first to leave a memory for Mini...</div>
 				) : (
 					messages.map((msg) => (
-						<div className={styles.messageCard} key={`${msg.name}-${msg.date}`}>
+						<div className={styles.messageCard} key={msg.id}>
 							<div className={styles.messageText}>&ldquo;{msg.text}&rdquo;</div>
 							<div className={styles.messageMeta}>
 								<span className={styles.messageName}>{msg.name}</span>
@@ -157,7 +189,7 @@ export default function RememberWall() {
 									</>
 								)}
 								<br />
-								<span className={styles.messageDate}>{formatDate(msg.date)}</span>
+								<span className={styles.messageDate}>{formatDate(msg.created_at)}</span>
 							</div>
 						</div>
 					))
