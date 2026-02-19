@@ -161,7 +161,7 @@ export default function Gallery() {
 						<div className={styles.lightboxImgPlaceholder}>[ Photo {lightboxIndex + 1} ]</div>
 					)}
 					
-					)}
+				
 				</div>
 			</div>
 		</section>
