@@ -16,8 +16,8 @@ export default function About() {
 					<Image
 						src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/kamala%20photo-mFY4keDtO5sIil0tqhxIWkpo8ErPQf.png"
 						alt="Dr. R. Kamala portrait"
-						width={300}
-						height={400}
+						width={200}
+						height={267}
 						priority
 						className={styles.photoImage}
 					/>
