@@ -45,7 +45,7 @@ export default function Tributes() {
 				<ScrollReveal>
 					<p className="section-label">Notes for the Book</p>
 					<h2 className="section-title">
-						Words Written <em>for Her</em>
+						Tributes
 					</h2>
 				</ScrollReveal>
 				<div className={styles.tributesGrid}>
