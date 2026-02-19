@@ -64,7 +64,6 @@ export default function Gallery() {
     [ Photo {index + 1} ]
   </div>
 )}
-							<div className={styles.galleryCaption}>{item.caption}</div>
 						</div>
 					))}
 				</div>
@@ -86,7 +85,7 @@ export default function Gallery() {
     [ Photo {lightboxIndex + 1} ]
   </div>
 )}
-					<div className={styles.lightboxCaption}>{lightboxItem?.caption}</div>
+		
 				</div>
 			</div>
 		</section>
