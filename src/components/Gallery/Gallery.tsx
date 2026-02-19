@@ -68,7 +68,7 @@ const GalleryCard = memo(function GalleryCard({
 					[ Photo {index + 1} ]
 				</div>
 			)}
-			<div className={styles.galleryCaption}>{item.caption}</div>
+			
 		</div>
 	);
 });
@@ -160,8 +160,7 @@ export default function Gallery() {
 					) : (
 						<div className={styles.lightboxImgPlaceholder}>[ Photo {lightboxIndex + 1} ]</div>
 					)}
-					{lightboxItem?.caption && (
-						<p className={styles.lightboxCaption}>{lightboxItem.caption}</p>
+					
 					)}
 				</div>
 			</div>
