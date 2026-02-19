@@ -32,9 +32,24 @@ export default function Book() {
 						This book is a gift to all who knew her, and a beautiful introduction for all who did
 						not.
 					</p>
-					<a href="#" className="btn btn-light">
-						Where to Buy ↗
-					</a>
+					<div style={{ marginTop: '2rem' }}>
+  <a 
+    href="https://wa.me/919895686526?text=Hi%2C%20I%27d%20like%20to%20pre-book%20The%20Hall%20of%20Silence.%20My%20address%20is%3A%20" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="btn btn-light"
+  >
+    Pre-book via WhatsApp →
+  </a>
+  <p style={{ 
+    marginTop: '1rem', 
+    fontSize: '0.9rem', 
+    color: 'var(--rose-light)', 
+    fontStyle: 'italic' 
+  }}>
+    Payment via GPay to 9895686526
+  </p>
+</div>
 				</ScrollReveal>
 			</div>
 		</div>
