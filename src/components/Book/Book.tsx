@@ -41,7 +41,7 @@ export default function Book() {
 						>
 							Pre-book via WhatsApp →
 						</a>
-						<p className={styles.paymentNote}>Payment via GPay to 9895686526</p>
+						
 					</div>
 				</ScrollReveal>
 			</div>
