@@ -69,7 +69,7 @@ export const tributes: Tribute[] = [
 	},
 	{
 		author: "Lahari Chinmaya Patri",
-		relation: "Teacher, Bhoja Reddy Engineering College, Andhra Pradesh",
+		relation: "Colleague",
 		title: "\u201CKamala Amma\u201D",
 		text: "\u201CKamala Amma\u201D — the person who called me \u201CBeti\u201D (a daughter). My first Mentor and Influencer in BRECW Hyderabad. Her absence is deeply felt. She is a remarkable woman who was truly an all-rounder in every sense of the word. She balanced her many roles with grace, excelling in her responsibilities while always making time to care for others.\n\nAs far as I know, she was a hardworking and a compassionate woman. She inspired many people around her through her strength, dedication, and positive spirit. Her presence touched many lives, and her legacy of resilience, kindness, and excellence will be remembered with utmost love and respect today and always.\n\nI feel truly fortunate to have had the opportunity to work and to learn so many new things along the way with Kamala Amma. Her versatility, dedication, caring nature and willingness to share knowledge made my experience meaningful. Working alongside her was both inspiring and enriching.",
 	},
